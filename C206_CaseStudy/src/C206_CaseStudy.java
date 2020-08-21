@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 
 public class C206_CaseStudy {
-
+	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
+	public static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
+	public static ArrayList<Menu> menuList = new ArrayList<Menu>();
 	public static void main(String[] args) {
-		ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
+
 		
 		int option = 0;
 		
@@ -68,6 +70,8 @@ public class C206_CaseStudy {
 			if(MenuItemList.get(i).getName().toLowerCase().equalsIgnoreCase(itemDelete)) {
 				MenuItemList.remove(i);
 				System.out.println("Item Deleted");
+				break;
+				
 			} else {
 				System.out.println("Item Not Deleted");
 			}
@@ -89,7 +93,102 @@ public class C206_CaseStudy {
 		}
 		System.out.println(output);
 	}
-
+	
+	//create a Menu object and append to Menu Arraylist global variable, checks for duplicate MenuItem entries and validates MenuItem actually 
+	//exists in MenuItem global ArrayList variable
+	public static void createMenu(ArrayList<Menu> menuList) {
+	Helper.line(60,"=");
+	System.out.println("CREATE NEW MENU");
+	Helper.line(60,"=");
+	String displayName=Helper.readString("Enter Name of Menu >");
+	int month=Helper.readInt("Please enter Menu's month >");
+	if(month>=1 && month<=12) {
+	int numberOfItems=Helper.readInt("Please enter amount of items in Menu >");
+	if(numberOfItems<=MenuItemList.size()) {
+		int count=0;
+		ArrayList<MenuItem> menuSelection=new ArrayList<MenuItem>();
+		while(count<MenuItemList.size()) {
+			boolean exists=false;
+			MenuItem selectedMenuItem=null;
+			viewAllMenuItem(MenuItemList);
+			String selected=Helper.readString("Please enter the name of the menu item to be added to the menu >");
+			for(MenuItem i:MenuItemList) {
+				if(i.getName().equalsIgnoreCase(selected)) {
+					exists=true;
+					selectedMenuItem=i;
+				}
+			}
+			if(exists) {
+				if(menuSelection.size()>0) {
+				boolean alreadyAdded=false;
+				if(menuSelection.contains(selectedMenuItem)) {
+					alreadyAdded=true;
+				}
+				if(alreadyAdded) {System.out.println("The following item is already added to the Menu Item list!");}
+				else {
+					menuSelection.add(selectedMenuItem);	
+				}
+				}
+				else if (menuSelection.size()==0) {
+				menuSelection.add(selectedMenuItem);	
+				}
+			}
+			else {System.out.println("This menu item does not exist");}
+				
+			
+			Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
+			menuList.add(newMenu);
+			System.out.println("Menu added!");
+			
+		}
+		
+	}
+	else {
+		System.out.println("Not enough unqiue items in Menu Item List!");
+	}
+	}
+	else {
+		System.out.println("Please enter a valid month integer (1-12).");
+	}
+	}
+	// View All Menu objects from Menu Array global variable
+	public static void viewAllMenu(ArrayList<Menu> menuList) {
+		if(menuList.size()==0) {
+			System.out.println("Menu bank is empty.");
+		}
+		else {
+			Helper.line(60,"=");
+			System.out.println("VIEWING ALL MENUS");
+			Helper.line(60,"=");
+			
+			String output = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO. OF ITEMS", "ITEMS");
+			for(Menu i:menuList) {
+				output+=i.toString();
+			}
+			System.out.println(output);
+		}
+	}
+	// Delete a Menu Object from Menu Array global variable
+	public static void deleteMenu(ArrayList<Menu> menuList) {
+		Helper.line(60,"=");
+		System.out.println("DELETE MENU");
+		Helper.line(60,"=");
+		viewAllMenu(menuList);
+		
+		String selectedMenu = Helper.readString("Enter Menu Name to Delete: ");
+		
+		
+		for (int i = 0; i < menuList.size(); i++) {
+			if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(selectedMenu)) {
+				menuList.remove(i);
+				System.out.println("Menu deleted.");
+				break;
+			} else {
+				System.out.println("Cannot find Menu.");
+			}
+		}
+			
+	}
 }
 
 

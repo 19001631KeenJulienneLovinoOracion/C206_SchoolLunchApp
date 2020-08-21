@@ -5,7 +5,7 @@ public class Menu {
 	private int numberOfItems;
 	private ArrayList<MenuItem> items;
 	public Menu(String displayName, int month, int numberOfItems, ArrayList<MenuItem> items) {
-		super();
+		
 		this.displayName = displayName;
 		this.month = month;
 		this.numberOfItems = numberOfItems;
