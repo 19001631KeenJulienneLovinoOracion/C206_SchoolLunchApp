@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class C206_CaseStudy {
 	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
+
 	public static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
 	public static ArrayList<Menu> menuList = new ArrayList<Menu>();
 	public static void main(String[] args) {
@@ -9,7 +10,7 @@ public class C206_CaseStudy {
 		
 		int option = 0;
 		
-		while (option !=4) {
+		while (option !=7) {
 			C206_CaseStudy.optionMenu();
 			option = Helper.readInt("Enter Option > ");
 			
@@ -25,9 +26,23 @@ public class C206_CaseStudy {
 				// view menu item
 				C206_CaseStudy.viewAllMenuItem(MenuItemList);
 			
-			} else {
+			}else if(option == 4) {
+				//create menu object
+				C206_CaseStudy.createMenu(menuList);
+				
+			}else if(option == 5) {
+				//delete menu object
+				C206_CaseStudy.deleteMenu(menuList);
+				
+			}else if(option == 6) {
+				//view all Menu objects
+				C206_CaseStudy.viewAllMenu(menuList);
+				
+			}else {
+				if(option!=7) {
 				System.out.println("Invalid Option");
 			}
+				}
 		}
 		System.out.println("Thank You");
 	}
@@ -39,7 +54,10 @@ public class C206_CaseStudy {
 		System.out.println("1. Add Menu Item");
 		System.out.println("2. Delete Menu Item");
 		System.out.println("3. View Menu Item");
-		System.out.println("4. Quit");
+		System.out.println("4. Create Menu");
+		System.out.println("5. Delete Menu");
+		System.out.println("6. View All Menus");
+		System.out.println("7. Quit");
 	}
 	
 	// ==================================== Add menu item ==============================================
@@ -107,7 +125,7 @@ public class C206_CaseStudy {
 	if(numberOfItems<=MenuItemList.size()) {
 		int count=0;
 		ArrayList<MenuItem> menuSelection=new ArrayList<MenuItem>();
-		while(count<MenuItemList.size()) {
+		while(count<numberOfItems) {
 			boolean exists=false;
 			MenuItem selectedMenuItem=null;
 			viewAllMenuItem(MenuItemList);
@@ -131,17 +149,18 @@ public class C206_CaseStudy {
 				}
 				else if (menuSelection.size()==0) {
 				menuSelection.add(selectedMenuItem);	
+				count++;
 				}
 			}
 			else {System.out.println("This menu item does not exist");}
 				
 			
-			Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
-			menuList.add(newMenu);
-			System.out.println("Menu added!");
+			
 			
 		}
-		
+		Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
+		menuList.add(newMenu);
+		System.out.println("Menu added!");
 	}
 	else {
 		System.out.println("Not enough unqiue items in Menu Item List!");
