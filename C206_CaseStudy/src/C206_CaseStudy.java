@@ -66,14 +66,26 @@ public class C206_CaseStudy {
 		System.out.println("ADD MENU ITEM");
 		Helper.line(60,"=");
 		
+		boolean existed = false;
+		
 		String category = Helper.readString("Enter Item's Category: ");
 		String name = Helper.readString("Enter Item's Name: ");
 		boolean healthyChoice = Helper.readBoolean("Is The Item A Healthier Choice? (Y/N) ");
 		double price = Helper.readDouble("Enter Item's Price: ");
 		
-		MenuItem menuItem = new MenuItem(category, name, healthyChoice, price);
-		MenuItemList.add(menuItem);
-		System.out.println("Menu Item Added");
+		for (MenuItem mi : MenuItemList) {
+			if (mi.getName().equalsIgnoreCase(name)) {
+				existed = true;
+			}
+		}
+		if (existed == false) {
+			MenuItem menuItem = new MenuItem(category, name, healthyChoice, price);
+			MenuItemList.add(menuItem);
+			System.out.println("Menu Item Added");
+		}else {
+			System.out.println("item exist");
+		}
+		
 	}
 
 	//===================================== delete menu item ===========================================
@@ -112,14 +124,18 @@ public class C206_CaseStudy {
 		System.out.println(output);
 	}
 	
+	
+	
 	//create a Menu object and append to Menu Arraylist global variable, checks for duplicate MenuItem entries and validates MenuItem actually 
 	//exists in MenuItem global ArrayList variable
 	public static void createMenu(ArrayList<Menu> menuList) {
 	Helper.line(60,"=");
 	System.out.println("CREATE NEW MENU");
 	Helper.line(60,"=");
+	
 	String displayName=Helper.readString("Enter Name of Menu >");
 	int month=Helper.readInt("Please enter Menu's month >");
+	
 	if(month>=1 && month<=12) {
 	int numberOfItems=Helper.readInt("Please enter amount of items in Menu >");
 	if(numberOfItems<=MenuItemList.size()) {
@@ -153,10 +169,6 @@ public class C206_CaseStudy {
 				}
 			}
 			else {System.out.println("This menu item does not exist");}
-				
-			
-			
-			
 		}
 		Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
 		menuList.add(newMenu);
