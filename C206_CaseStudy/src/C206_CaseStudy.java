@@ -176,7 +176,7 @@ public class C206_CaseStudy {
 	Helper.line(60,"=");
 	System.out.println("CREATE NEW MENU");
 	Helper.line(60,"=");
-	
+
 	menuName=Helper.readString("Enter Name of Menu >");
 	menuMonth=Helper.readInt("Please enter Menu's month >");
 	
@@ -261,22 +261,31 @@ public class C206_CaseStudy {
 		 deleteMenu(menuList ,selectedMenu);
 	}
 	// Delete a Menu Object from Menu Array global variable
-	public static void deleteMenu(ArrayList<Menu> menuList,String menuName) {
+	public static String deleteMenu(ArrayList<Menu> menuList,String menuName) {
 
-		
-		
+		if(menuList.size()>0) {
+			boolean foundMenu=false;
 		for (int i = 0; i < menuList.size(); i++) {
 			if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(menuName)) {
 				menuList.remove(i);
-				System.out.println("Menu deleted.");
-				break;
-			} else {
-				System.out.println("Cannot find Menu.");
-			}
+				foundMenu=true;
+			
+				return "Menu deleted.";
+				
+			} 
+		}
+		if(!foundMenu) {
+			
+				return "Menu not found!";
+			
 		}
 			
 	}
-	
+		
+			return "Menu array is empty!";
+		
+		}
+
 	
 	//ADD ORDER
 	

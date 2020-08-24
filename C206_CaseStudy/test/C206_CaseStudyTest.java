@@ -92,6 +92,7 @@ public class C206_CaseStudyTest {
 		// Menu List is not null and can contain Menu Objects
 		assertNotNull("Test if Menu ArrayList exists", C206_CaseStudy.menuList);
 		
+		
 		//Given an empty Menu list, after adding 1 Menu item, the size of the list is 1
 		Menu testMenu=new Menu("January Asia",1,2,C206_CaseStudy.MenuItemList);
 		C206_CaseStudy.createMenuObject(C206_CaseStudy.menuList,"January Asia",1,2,C206_CaseStudy.MenuItemList);
@@ -105,9 +106,14 @@ public class C206_CaseStudyTest {
 	public void viewAllMenuTest() {
 		// Menu List is not null and can contain Menu Objects
 		assertNotNull("Test if Menu ArrayList exists", C206_CaseStudy.menuList);
+		C206_CaseStudy.menuList.clear();
 		
-
 		
+		//Given an empty Menu list, when instructed to view all Menus, the following error String is returned and printed out
+				assertEquals("Test if An empty array returns a String indicating an error from the method","Menu bank is empty.",C206_CaseStudy.viewAllMenu(C206_CaseStudy.menuList));
+		
+				
+				C206_CaseStudy.createMenuObject(C206_CaseStudy.menuList,"January Asia",1,2,C206_CaseStudy.MenuItemList);
 		//test if the expected output string same as the list of Menu Items retrieved from menuTest ArrayList
 String allMenus=C206_CaseStudy.viewAllMenu(C206_CaseStudy.menuList);
 String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO. OF ITEMS", "ITEMS");
@@ -120,11 +126,20 @@ String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO
 	public void deleteMenuTest() {
 		// Menu List is not null and can contain Menu Objects
 		assertNotNull("Test if Menu ArrayList exists",  C206_CaseStudy.menuList);
+		//Given an incorrect menu name, the function returns an error indicating it cannot find any menus with the keyword
+				assertEquals("Test if no Menus Found function works and returns error String",C206_CaseStudy.deleteMenu(C206_CaseStudy.menuList, "February Western"),"Menu not found!");
+				
 		
 
 		//Given an item in Menu List, after deleting the Menu Item, the size of the list is 0
 		C206_CaseStudy.deleteMenu(C206_CaseStudy.menuList,"January Asia");
 		assertEquals("Test if that Menu ArrayList size is 0", 0, C206_CaseStudy.menuList.size());
+		
+		
+		//Given an empty Menu array, the function returns an error indicating it cannot delete anything as Menu Array is empty
+		assertEquals("Test if that Menu cannot delete from empty ArrayList", "Menu array is empty!", C206_CaseStudy.deleteMenu(C206_CaseStudy.menuList, "January Asia"));
+		
+		
 	
 	}
 
