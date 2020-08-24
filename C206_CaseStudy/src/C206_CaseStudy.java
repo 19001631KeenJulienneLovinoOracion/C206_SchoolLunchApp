@@ -275,7 +275,6 @@ public class C206_CaseStudy {
 	}
 	
 	
-	//ADD ORDER
 	public static void addOrder(ArrayList<Order> orderList) {
 		
 		boolean isFound = false;
@@ -290,7 +289,7 @@ public class C206_CaseStudy {
 		//num of Meals is how many food items the student or parents wants to order
 		int numOfMeals = Helper.readInt("Enter the amount of meals to order > ");
 	
-		
+		//
 		for (int orderObject = 0; orderObject < numOfMeals; orderObject++) {
 			String mealchoice = Helper.readString("Enter the name of the food > ");
 			for (MenuItem mealObject : MenuItemList) {
