@@ -145,19 +145,22 @@ public class C206_CaseStudy {
 		System.out.println("DELETE MENU ITEM");
 		Helper.line(60,"=");
 		
-		String itemDelete = Helper.readString("Enter Item's Name To Delete: ");
+		boolean delete = false;
+		String itemDelete = Helper.readString("Enter Item's Name To Delete: ");		
 		
 		for (int i = 0; i < MenuItemList.size(); i++) {
-			if(MenuItemList.get(i).getName().toLowerCase().equalsIgnoreCase(itemDelete)) {
+			if (MenuItemList.get(i).getName().equals(itemDelete)){
 				MenuItemList.remove(i);
-				System.out.println("Item Deleted");
-				break;
-				
-			} else {
-				System.out.println("Item Not Deleted");
+				delete = true;
 			}
 		}
-	}
+			if(delete = true) {
+				System.out.println("Item Deleted");
+			}else {
+				System.out.println("Item Not Deleted");
+			}				
+		}
+	
 	
 	//===================================== view menu item =============================================
 	public static void viewAllMenuItem(ArrayList<MenuItem> MenuItemList) {
@@ -166,8 +169,6 @@ public class C206_CaseStudy {
 		Helper.line(60,"=");
 		
 		String output = "";
-
-		output += String.format("%-10s %-10s %-20s %-10s\n", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE");
 
 		output += String.format("%-20s %-20s %-30s %-30s\n", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE");
 		for (int i = 0; i < MenuItemList.size(); i++) {
