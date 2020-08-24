@@ -8,7 +8,11 @@ public class C206_CaseStudy {
 	static ArrayList<Order> orderList = new ArrayList<Order>();
 	public static void main(String[] args) {
 
-		
+		//camcorderList.add(new Camcorder("CC001", "Sony HDR-CX405", 35));
+		//String category, String name, boolean healthyChoice, double price
+		MenuItemList.add(new MenuItem("Western", "Fish and Chips", false, 4.00));
+		MenuItemList.add(new MenuItem("Asian", "Wanton Noodles", false, 3.00));
+		MenuItemList.add(new MenuItem("Vegetarian", "Salad", true,6.00 ));
 		int option = 0;
 		
 		while (option !=8) {
@@ -46,23 +50,31 @@ public class C206_CaseStudy {
 				C206_CaseStudy.orderMenu();
 				int choice = Helper.readInt("Enter order choice: ");
 				
+
 				if (choice == 1) {
 					C206_CaseStudy.addOrder(orderList);
 				}
-				
+						
 				else if (choice == 2) {
 					C206_CaseStudy.deleteOrder(orderList);
 				}
-				
+						
 				else if (choice == 3) {
 					C206_CaseStudy.viewOrder(orderList);
 				}
-				
+						
+				else if (choice ==4) {
+					System.out.println("Thank you for ordering!");
+					C206_CaseStudy.optionMenu();
+				}
+						
 				else {
 					System.out.println("You have entered an invalid order choice");
 				}
-				
 			}
+				
+
+		
 			else {
 				if(option!=7) {
 				System.out.println("Invalid Option");
@@ -95,6 +107,7 @@ public class C206_CaseStudy {
 		System.out.println("1. Add Order");
 		System.out.println("2. Delete Order");
 		System.out.println("3. View Order");
+		System.out.println("4. Exit Order Option");
 		
 	}
 	
@@ -156,9 +169,9 @@ public class C206_CaseStudy {
 		
 		String output = "";
 		
-		output += String.format("%-10s %-10s %-20s %-10s\n", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE");
+		output += String.format("%-20s %-20s %-30s %-30s\n", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE");
 		for (int i = 0; i < MenuItemList.size(); i++) {
-			output += String.format("%-10s %-10s %-20b %-10s\n", MenuItemList.get(i).getCategory(), MenuItemList.get(i).getName(), 
+			output += String.format("%-20s %-20s %-30b %-30s\n", MenuItemList.get(i).getCategory(), MenuItemList.get(i).getName(), 
 					MenuItemList.get(i).isHealthyChoice(),MenuItemList.get(i).getPrice());
 		}
 		System.out.println(output);
@@ -263,61 +276,94 @@ public class C206_CaseStudy {
 	
 	
 	//ADD ORDER
-	
-	
 	public static void addOrder(ArrayList<Order> orderList) {
+		
+		boolean isFound = false;
+		
+		//Call the view all menu items for user to choose from
+		C206_CaseStudy.viewAllMenuItem(MenuItemList);
 		
 		ArrayList <MenuItem> userChoices = new ArrayList<MenuItem>();
 		
-		String studentID = Helper.readString("Enter your student ID: ");
-		String orderDate = Helper.readString("Enter the order date in the format dd/mm/yyyy: ");
+		String studentID = Helper.readString("Enter your student ID> ");
+		String orderDate = Helper.readString("Enter the order date in the format dd/mm/yyyy > ");
+		//num of Meals is how many food items the student or parents wants to order
 		int numOfMeals = Helper.readInt("Enter the amount of meals to order > ");
+	
 		
 		for (int orderObject = 0; orderObject < numOfMeals; orderObject++) {
-			String mealchoice = Helper.readString("Enter your meal choice: ");
+			String mealchoice = Helper.readString("Enter the name of the food > ");
 			for (MenuItem mealObject : MenuItemList) {
 				if (mealObject.getName().equalsIgnoreCase(mealchoice)) {
+					isFound = true;
 					userChoices.add(mealObject);
+					System.out.println("Your order is successful!");
 				}
 			}
+			
+			if (isFound == false) {
+				System.out.println("The menu item you entered could not be found");
+			}
 		}
-	
-		Order newOrder=new Order(studentID, orderDate, MenuItemList); 
+		Order newOrder=new Order(studentID, orderDate, userChoices); 
 		orderList.add(newOrder);
-		
 	}
 	
 	//DELETE ORDER
 	public static void deleteOrder(ArrayList<Order> orderList) {
 		
+		
 		boolean isDeleted = false;
-		String deleteItem = Helper.readString("Enter the date for order you wish to delete: ");
+		String deleteUser = Helper.readString("Enter your student ID > ");
+		String deleteItem = Helper.readString("Enter the date for order you wish to delete> ");
 		
 		for (int i=0; i<orderList.size(); i++ ) {
 			
-			if (deleteItem.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
-				orderList.remove(i);
-				isDeleted = true;
-				System.out.println("The order has been successfully deleted");
+			if (deleteUser.equalsIgnoreCase(orderList.get(i).getStudentid())) {
+				if (deleteItem.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
+					orderList.remove(i);
+					isDeleted = true;
+					System.out.println("The order has been successfully deleted");
+				}
 			}
-			
-			else {
-				System.out.println("The date could not be found. ");
-			}
+		}
+		
+		if (isDeleted == false) {
+			System.out.println("An error has occured when deleting the menu item.");
 		}
 	}
 	
 	//VIEW ORDER
 	public static void viewOrder(ArrayList<Order> orderList) {
-		
+	
+		boolean isFoundID = false;
+		boolean isFoundDate = false;
+		String studentID = Helper.readString("Enter your student ID to view your order > ");
+		String dateView = Helper.readString("Enter the date of the order you want to view > ");
 		String output = "";
 		output += String.format("%-20s %-20s %-20s\n", "STUDENT ID", "ORDER DATE", "MENU ITEM");
 		
 		for (int i=0; i<orderList.size(); i ++) {
-			output += String.format("%-20s %-20s %-20s\n", orderList.get(i).getStudentid(), orderList.get(i).getOrderDate(), orderList.get(i).getItems());
+			
+			if (studentID.equalsIgnoreCase(orderList.get(i).getStudentid())) {
+				isFoundID = true;
+				
+				if (dateView.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
+					output += String.format("%-20s %-20s %-20s\n", orderList.get(i).getStudentid(), orderList.get(i).getOrderDate(), orderList.get(i).getItems());
+					isFoundDate = true;
+				}
+			}
+			
+		}
+		System.out.println(output);
+		
+		if (isFoundID == false) {
+			System.out.println("Your student ID cannot be found.");
 		}
 		
-		System.out.println(output);
+		if (isFoundDate == false ) {
+			System.out.println("The date you specified could not be found.");
+		}
 		
 	}
 }
