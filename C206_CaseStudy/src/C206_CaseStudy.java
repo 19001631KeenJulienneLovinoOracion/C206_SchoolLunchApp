@@ -6,6 +6,10 @@ public class C206_CaseStudy {
 	static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
 	static ArrayList<Menu> menuList = new ArrayList<Menu>();
 	static ArrayList<Order> orderList = new ArrayList<Order>();
+	public static String menuName;
+	public static int menuSize;
+	public static int menuMonth;
+	public static ArrayList<MenuItem> menuContent=new ArrayList<MenuItem>();
 	public static void main(String[] args) {
 
 		
@@ -30,11 +34,12 @@ public class C206_CaseStudy {
 			
 			}else if(option == 4) {
 				//create menu object
-				C206_CaseStudy.createMenu(menuList);
+				createMenuFields();
+				C206_CaseStudy.createMenuObject(menuList, menuName, menuSize, menuMonth, menuContent);
 				
 			}else if(option == 5) {
 				//delete menu object
-				C206_CaseStudy.deleteMenu(menuList);
+				C206_CaseStudy.getDeleteMenuField();
 				
 			}else if(option == 6) {
 				//view all Menu objects
@@ -166,22 +171,21 @@ public class C206_CaseStudy {
 	
 	
 	
-	//create a Menu object and append to Menu Arraylist global variable, checks for duplicate MenuItem entries and validates MenuItem actually 
-	//exists in MenuItem global ArrayList variable
-	public static void createMenu(ArrayList<Menu> menuList) {
+	//Initialize Menu object fields
+	public static void createMenuFields() {
 	Helper.line(60,"=");
 	System.out.println("CREATE NEW MENU");
 	Helper.line(60,"=");
 	
-	String displayName=Helper.readString("Enter Name of Menu >");
-	int month=Helper.readInt("Please enter Menu's month >");
+	String menuName=Helper.readString("Enter Name of Menu >");
+	int menuMonth=Helper.readInt("Please enter Menu's month >");
 	
-	if(month>=1 && month<=12) {
-	int numberOfItems=Helper.readInt("Please enter amount of items in Menu >");
-	if(numberOfItems<=MenuItemList.size()) {
+	if(menuMonth>=1 && menuMonth<=12) {
+	int menuSize=Helper.readInt("Please enter amount of items in Menu >");
+	if(menuSize<=MenuItemList.size()) {
 		int count=0;
-		ArrayList<MenuItem> menuSelection=new ArrayList<MenuItem>();
-		while(count<numberOfItems) {
+
+		while(count<menuSize) {
 			boolean exists=false;
 			MenuItem selectedMenuItem=null;
 			viewAllMenuItem(MenuItemList);
@@ -193,27 +197,25 @@ public class C206_CaseStudy {
 				}
 			}
 			if(exists) {
-				if(menuSelection.size()>0) {
+				if(menuContent.size()>0) {
 				boolean alreadyAdded=false;
-				if(menuSelection.contains(selectedMenuItem)) {
+				if(menuContent.contains(selectedMenuItem)) {
 					alreadyAdded=true;
 				}
 				if(alreadyAdded) {System.out.println("The following item is already added to the Menu Item list!");}
 				else {
-					menuSelection.add(selectedMenuItem);	
+					menuContent.add(selectedMenuItem);	
 					count++;
 				}
 				}
-				else if (menuSelection.size()==0) {
-				menuSelection.add(selectedMenuItem);	
+				else if (menuContent.size()==0) {
+					menuContent.add(selectedMenuItem);	
 				count++;
 				}
 			}
 			else {System.out.println("This menu item does not exist");}
 		}
-		Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
-		menuList.add(newMenu);
-		System.out.println("Menu added!");
+
 	}
 	else {
 		System.out.println("Not enough unqiue items in Menu Item List!");
@@ -241,18 +243,30 @@ public class C206_CaseStudy {
 		}
 		
 	}
-	// Delete a Menu Object from Menu Array global variable
-	public static void deleteMenu(ArrayList<Menu> menuList) {
+	
+	//create Menu with fields
+	public static void createMenuObject(ArrayList<Menu> menuList,String displayName,int month,int numberOfItems,ArrayList<MenuItem> menuSelection) {
+		Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
+		menuList.add(newMenu);
+		System.out.println("Menu added!");
+	}
+	
+	public static void getDeleteMenuField() {
 		Helper.line(60,"=");
 		System.out.println("DELETE MENU");
 		Helper.line(60,"=");
 		viewAllMenu(menuList);
 		
 		String selectedMenu = Helper.readString("Enter Menu Name to Delete: ");
+		 deleteMenu(menuList ,selectedMenu);
+	}
+	// Delete a Menu Object from Menu Array global variable
+	public static void deleteMenu(ArrayList<Menu> menuList,String menuName) {
+
 		
 		
 		for (int i = 0; i < menuList.size(); i++) {
-			if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(selectedMenu)) {
+			if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(menuName)) {
 				menuList.remove(i);
 				System.out.println("Menu deleted.");
 				break;

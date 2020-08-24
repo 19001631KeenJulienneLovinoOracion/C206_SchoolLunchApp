@@ -94,7 +94,7 @@ public class C206_CaseStudyTest {
 		
 		//Given an empty Menu list, after adding 1 Menu item, the size of the list is 1
 		Menu testMenu=new Menu("January Asia",1,2,C206_CaseStudy.MenuItemList);
-		C206_CaseStudy.createMenu(C206_CaseStudy.menuList);
+		C206_CaseStudy.createMenuObject(C206_CaseStudy.menuList,"January Asia",1,2,C206_CaseStudy.MenuItemList);
 		assertEquals("Test if that Menu ArrayList size is 1", 1, C206_CaseStudy.menuList.size());
 		
 		//Item added matches the object that was entered as parameter
@@ -123,7 +123,7 @@ String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO
 		
 
 		//Given an item in Menu List, after deleting the Menu Item, the size of the list is 0
-		C206_CaseStudy.deleteMenu(C206_CaseStudy.menuList);
+		C206_CaseStudy.deleteMenu(C206_CaseStudy.menuList,"January Asia");
 		assertEquals("Test if that Menu ArrayList size is 0", 0, C206_CaseStudy.menuList.size());
 	
 	}
