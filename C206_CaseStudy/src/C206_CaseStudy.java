@@ -177,11 +177,11 @@ public class C206_CaseStudy {
 	System.out.println("CREATE NEW MENU");
 	Helper.line(60,"=");
 	
-	String menuName=Helper.readString("Enter Name of Menu >");
-	int menuMonth=Helper.readInt("Please enter Menu's month >");
+	menuName=Helper.readString("Enter Name of Menu >");
+	menuMonth=Helper.readInt("Please enter Menu's month >");
 	
 	if(menuMonth>=1 && menuMonth<=12) {
-	int menuSize=Helper.readInt("Please enter amount of items in Menu >");
+	 menuSize=Helper.readInt("Please enter amount of items in Menu >");
 	if(menuSize<=MenuItemList.size()) {
 		int count=0;
 
@@ -255,7 +255,7 @@ public class C206_CaseStudy {
 		Helper.line(60,"=");
 		System.out.println("DELETE MENU");
 		Helper.line(60,"=");
-		viewAllMenu(menuList);
+		System.out.println(viewAllMenu(menuList));
 		
 		String selectedMenu = Helper.readString("Enter Menu Name to Delete: ");
 		 deleteMenu(menuList ,selectedMenu);
