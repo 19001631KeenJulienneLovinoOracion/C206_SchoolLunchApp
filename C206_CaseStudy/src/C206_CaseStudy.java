@@ -6,10 +6,6 @@ public class C206_CaseStudy {
 	static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
 	static ArrayList<Menu> menuList = new ArrayList<Menu>();
 	static ArrayList<Order> orderList = new ArrayList<Order>();
-	public static String menuName;
-	public static int menuSize;
-	public static int menuMonth;
-	public static ArrayList<MenuItem> menuContent=new ArrayList<MenuItem>();
 	public static void main(String[] args) {
 
 		//camcorderList.add(new Camcorder("CC001", "Sony HDR-CX405", 35));
@@ -38,17 +34,16 @@ public class C206_CaseStudy {
 			
 			}else if(option == 4) {
 				//create menu object
-				createMenuFields();
-				C206_CaseStudy.createMenuObject(menuList, menuName, menuSize, menuMonth, menuContent);
+				C206_CaseStudy.createMenu(menuList);
 				
 			}else if(option == 5) {
 				//delete menu object
-				C206_CaseStudy.getDeleteMenuField();
+				C206_CaseStudy.deleteMenu(menuList);
 				
 			}else if(option == 6) {
 				//view all Menu objects
-				System.out.println(C206_CaseStudy.viewAllMenu(menuList));
-			
+				C206_CaseStudy.viewAllMenu(menuList);
+				
 			}
 			
 			else if (option == 7) {
@@ -152,25 +147,19 @@ public class C206_CaseStudy {
 		System.out.println("DELETE MENU ITEM");
 		Helper.line(60,"=");
 		
-		boolean deleted = false;
 		String itemDelete = Helper.readString("Enter Item's Name To Delete: ");
 		
-		for (int i=0; i<MenuItemList.size();i++) {
+		for (int i = 0; i < MenuItemList.size(); i++) {
 			if(MenuItemList.get(i).getName().toLowerCase().equalsIgnoreCase(itemDelete)) {
-				deleted = true;
-			}
-			
-			if (deleted == true) {
 				MenuItemList.remove(i);
-				System.out.println("Menu Item Deleted");
-			}else if (deleted == false){
-				System.out.println("Menu Item Not Deleted");
+				System.out.println("Item Deleted");
+				break;
+				
 			} else {
-				System.out.println("Menu Item Does Not Exist");
-		}
+				System.out.println("Item Not Deleted");
+			}
 		}
 	}
-
 	
 	//===================================== view menu item =============================================
 	public static void viewAllMenuItem(ArrayList<MenuItem> MenuItemList) {
@@ -190,21 +179,22 @@ public class C206_CaseStudy {
 	
 	
 	
-	//Initialize Menu object fields
-	public static void createMenuFields() {
+	//create a Menu object and append to Menu Arraylist global variable, checks for duplicate MenuItem entries and validates MenuItem actually 
+	//exists in MenuItem global ArrayList variable
+	public static void createMenu(ArrayList<Menu> menuList) {
 	Helper.line(60,"=");
 	System.out.println("CREATE NEW MENU");
 	Helper.line(60,"=");
-
-	menuName=Helper.readString("Enter Name of Menu >");
-	menuMonth=Helper.readInt("Please enter Menu's month >");
 	
-	if(menuMonth>=1 && menuMonth<=12) {
-	 menuSize=Helper.readInt("Please enter amount of items in Menu >");
-	if(menuSize<=MenuItemList.size()) {
+	String displayName=Helper.readString("Enter Name of Menu >");
+	int month=Helper.readInt("Please enter Menu's month >");
+	
+	if(month>=1 && month<=12) {
+	int numberOfItems=Helper.readInt("Please enter amount of items in Menu >");
+	if(numberOfItems<=MenuItemList.size()) {
 		int count=0;
-
-		while(count<menuSize) {
+		ArrayList<MenuItem> menuSelection=new ArrayList<MenuItem>();
+		while(count<numberOfItems) {
 			boolean exists=false;
 			MenuItem selectedMenuItem=null;
 			viewAllMenuItem(MenuItemList);
@@ -216,25 +206,26 @@ public class C206_CaseStudy {
 				}
 			}
 			if(exists) {
-				if(menuContent.size()>0) {
+				if(menuSelection.size()>0) {
 				boolean alreadyAdded=false;
-				if(menuContent.contains(selectedMenuItem)) {
+				if(menuSelection.contains(selectedMenuItem)) {
 					alreadyAdded=true;
 				}
 				if(alreadyAdded) {System.out.println("The following item is already added to the Menu Item list!");}
 				else {
-					menuContent.add(selectedMenuItem);	
-					count++;
+					menuSelection.add(selectedMenuItem);	
 				}
 				}
-				else if (menuContent.size()==0) {
-					menuContent.add(selectedMenuItem);	
+				else if (menuSelection.size()==0) {
+				menuSelection.add(selectedMenuItem);	
 				count++;
 				}
 			}
 			else {System.out.println("This menu item does not exist");}
 		}
-
+		Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
+		menuList.add(newMenu);
+		System.out.println("Menu added!");
 	}
 	else {
 		System.out.println("Not enough unqiue items in Menu Item List!");
@@ -245,9 +236,9 @@ public class C206_CaseStudy {
 	}
 	}
 	// View All Menu objects from Menu Array global variable
-	public static String viewAllMenu(ArrayList<Menu> menuList) {
+	public static void viewAllMenu(ArrayList<Menu> menuList) {
 		if(menuList.size()==0) {
-			return "Menu bank is empty.";
+			System.out.println("Menu bank is empty.");
 		}
 		else {
 			Helper.line(60,"=");
@@ -258,53 +249,31 @@ public class C206_CaseStudy {
 			for(Menu i:menuList) {
 				output+=i.toString();
 			}
-			return output;
+			System.out.println(output);
 		}
-		
 	}
-	
-	//create Menu with fields
-	public static void createMenuObject(ArrayList<Menu> menuList,String displayName,int month,int numberOfItems,ArrayList<MenuItem> menuSelection) {
-		Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
-		menuList.add(newMenu);
-		System.out.println("Menu added!");
-	}
-	
-	public static void getDeleteMenuField() {
+	// Delete a Menu Object from Menu Array global variable
+	public static void deleteMenu(ArrayList<Menu> menuList) {
 		Helper.line(60,"=");
 		System.out.println("DELETE MENU");
 		Helper.line(60,"=");
-		System.out.println(viewAllMenu(menuList));
+		viewAllMenu(menuList);
 		
 		String selectedMenu = Helper.readString("Enter Menu Name to Delete: ");
-		 deleteMenu(menuList ,selectedMenu);
-	}
-	// Delete a Menu Object from Menu Array global variable
-	public static String deleteMenu(ArrayList<Menu> menuList,String menuName) {
-
-		if(menuList.size()>0) {
-			boolean foundMenu=false;
+		
+		
 		for (int i = 0; i < menuList.size(); i++) {
-			if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(menuName)) {
+			if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(selectedMenu)) {
 				menuList.remove(i);
-				foundMenu=true;
-			
-				return "Menu deleted.";
-				
-			} 
-		}
-		if(!foundMenu) {
-			
-				return "Menu not found!";
-			
+				System.out.println("Menu deleted.");
+				break;
+			} else {
+				System.out.println("Cannot find Menu.");
+			}
 		}
 			
 	}
-		
-			return "Menu array is empty!";
-		
-		}
-
+	
 	
 	public static void addOrder(ArrayList<Order> orderList) {
 		
@@ -362,7 +331,7 @@ public class C206_CaseStudy {
 		}
 	}
 	
-	//VIEW ORDER
+	//VIEW ORDER Keen
 	public static void viewOrder(ArrayList<Order> orderList) {
 	
 		boolean isFoundID = false;
