@@ -139,19 +139,25 @@ public class C206_CaseStudy {
 		System.out.println("DELETE MENU ITEM");
 		Helper.line(60,"=");
 		
+		boolean deleted = false;
 		String itemDelete = Helper.readString("Enter Item's Name To Delete: ");
 		
-		for (int i = 0; i < MenuItemList.size(); i++) {
+		for (int i=0; i<MenuItemList.size();i++) {
 			if(MenuItemList.get(i).getName().toLowerCase().equalsIgnoreCase(itemDelete)) {
-				MenuItemList.remove(i);
-				System.out.println("Item Deleted");
-				break;
-				
-			} else {
-				System.out.println("Item Not Deleted");
+				deleted = true;
 			}
+			
+			if (deleted == true) {
+				MenuItemList.remove(i);
+				System.out.println("Menu Item Deleted");
+			}else if (deleted == false){
+				System.out.println("Menu Item Not Deleted");
+			} else {
+				System.out.println("Menu Item Does Not Exist");
+		}
 		}
 	}
+
 	
 	//===================================== view menu item =============================================
 	public static void viewAllMenuItem(ArrayList<MenuItem> MenuItemList) {
