@@ -311,8 +311,7 @@ public class C206_CaseStudy {
 	
 	//DELETE ORDER
 	public static void deleteOrder(ArrayList<Order> orderList) {
-		
-		
+	
 		boolean isDeleted = false;
 		String deleteUser = Helper.readString("Enter your student ID > ");
 		String deleteItem = Helper.readString("Enter the date for order you wish to delete> ");
