@@ -3,20 +3,22 @@ import java.util.ArrayList;
 public class C206_CaseStudy {
 	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
 
-	public static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
-	public static ArrayList<Menu> menuList = new ArrayList<Menu>();
+	static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
+	static ArrayList<Menu> menuList = new ArrayList<Menu>();
+	static ArrayList<Order> orderList = new ArrayList<Order>();
 	public static void main(String[] args) {
 
 		
 		int option = 0;
 		
-		while (option !=7) {
+		while (option !=8) {
 			C206_CaseStudy.optionMenu();
 			option = Helper.readInt("Enter Option > ");
 			
 			if(option == 1) {
 				// add menu item
 				C206_CaseStudy.addMenuItem(MenuItemList);
+				
 				
 			}else if(option == 2) {
 				//delete menu item
@@ -38,7 +40,30 @@ public class C206_CaseStudy {
 				//view all Menu objects
 				C206_CaseStudy.viewAllMenu(menuList);
 				
-			}else {
+			}
+			
+			else if (option == 7) {
+				C206_CaseStudy.orderMenu();
+				int choice = Helper.readInt("Enter order choice: ");
+				
+				if (choice == 1) {
+					C206_CaseStudy.addOrder(orderList);
+				}
+				
+				else if (choice == 2) {
+					C206_CaseStudy.deleteOrder(orderList);
+				}
+				
+				else if (choice == 3) {
+					C206_CaseStudy.viewOrder(orderList);
+				}
+				
+				else {
+					System.out.println("You have entered an invalid order choice");
+				}
+				
+			}
+			else {
 				if(option!=7) {
 				System.out.println("Invalid Option");
 			}
@@ -57,8 +82,23 @@ public class C206_CaseStudy {
 		System.out.println("4. Create Menu");
 		System.out.println("5. Delete Menu");
 		System.out.println("6. View All Menus");
-		System.out.println("7. Quit");
+		System.out.println("7. Create Order");
+		System.out.println("8. Quit");
 	}
+	
+	//Sub menu for the order method
+	
+	public static void orderMenu() {
+		Helper.line(60,"=");
+		System.out.println("Choose order option");
+		Helper.line(60,"=");
+		System.out.println("1. Add Order");
+		System.out.println("2. Delete Order");
+		System.out.println("3. View Order");
+		
+	}
+	
+
 	
 	// ==================================== Add menu item ==============================================
 	public static void addMenuItem(ArrayList<MenuItem> MenuItemList) {
@@ -219,6 +259,66 @@ public class C206_CaseStudy {
 			}
 		}
 			
+	}
+	
+	
+	//ADD ORDER
+	
+	
+	public static void addOrder(ArrayList<Order> orderList) {
+		
+		ArrayList <MenuItem> userChoices = new ArrayList<MenuItem>();
+		
+		String studentID = Helper.readString("Enter your student ID: ");
+		String orderDate = Helper.readString("Enter the order date in the format dd/mm/yyyy: ");
+		int numOfMeals = Helper.readInt("Enter the amount of meals to order > ");
+		
+		for (int orderObject = 0; orderObject < numOfMeals; orderObject++) {
+			String mealchoice = Helper.readString("Enter your meal choice: ");
+			for (MenuItem mealObject : MenuItemList) {
+				if (mealObject.getName().equalsIgnoreCase(mealchoice)) {
+					userChoices.add(mealObject);
+				}
+			}
+		}
+	
+		Order newOrder=new Order(studentID, orderDate, MenuItemList); 
+		orderList.add(newOrder);
+		
+	}
+	
+	//DELETE ORDER
+	public static void deleteOrder(ArrayList<Order> orderList) {
+		
+		boolean isDeleted = false;
+		String deleteItem = Helper.readString("Enter the date for order you wish to delete: ");
+		
+		for (int i=0; i<orderList.size(); i++ ) {
+			
+			if (deleteItem.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
+				orderList.remove(i);
+				isDeleted = true;
+				System.out.println("The order has been successfully deleted");
+			}
+			
+			else {
+				System.out.println("The date could not be found. ");
+			}
+		}
+	}
+	
+	//VIEW ORDER
+	public static void viewOrder(ArrayList<Order> orderList) {
+		
+		String output = "";
+		output += String.format("%-20s %-20s %-20s\n", "STUDENT ID", "ORDER DATE", "MENU ITEM");
+		
+		for (int i=0; i<orderList.size(); i ++) {
+			output += String.format("%-20s %-20s %-20s\n", orderList.get(i).getStudentid(), orderList.get(i).getOrderDate(), orderList.get(i).getItems());
+		}
+		
+		System.out.println(output);
+		
 	}
 }
 
