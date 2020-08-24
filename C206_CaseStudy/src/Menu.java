@@ -41,6 +41,7 @@ public class Menu {
 		for(MenuItem i:items) {
 			menuItems+=i.getName()+", ";
 		}
+	
 		output+=String.format("%-20s %-10d %-10d %s\n", displayName,month,numberOfItems,menuItems);
 		return output;
 	}

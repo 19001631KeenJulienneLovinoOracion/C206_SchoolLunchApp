@@ -15,7 +15,7 @@ public class MenuItem {
 		return category;
 	}
 	
-	public  void setCategory() {
+	public  void setCategory(String category) {
 		this.category=category;
 	}
 	
@@ -30,7 +30,7 @@ public class MenuItem {
 		return name;
 	}
 	
-	public void setName() {
+	public void setName(String name) {
 		this.name=name;
 	}
 	
@@ -38,7 +38,7 @@ public class MenuItem {
 		return price;
 	}
 	
-	public void setPrice() {
+	public void setPrice(double price) {
 		this.price=price;
 	}
 	
