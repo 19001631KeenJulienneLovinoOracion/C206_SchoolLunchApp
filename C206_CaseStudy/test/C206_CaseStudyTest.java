@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-//		Menu testMenu=new Menu("January Asia",1,2,C206_CaseStudy.MenuItemList); fields for testing, for Menu Items enter Chicken rice
+//Menu testMenu=new Menu("January Asia",1,2,C206_CaseStudy.MenuItemList); fields for testing, for Menu Items enter Chicken rice
 //and Nasi Lemak in ORDER
 public class C206_CaseStudyTest {
 	public MenuItem chknRice;
 	public MenuItem nasiLemak;
+	public MenuItem menuitem;
 	public ArrayList<Menu> menuTest=new ArrayList<Menu>();
 	public ArrayList<MenuItem> menuItemTest=new ArrayList<MenuItem>();
 
@@ -26,6 +27,7 @@ public class C206_CaseStudyTest {
 	public void tearDown() throws Exception {
 		chknRice=null;
 		nasiLemak=null;
+		menuitem = null;
 		C206_CaseStudy.MenuItemList.clear();
 	}
 	
@@ -37,54 +39,50 @@ public class C206_CaseStudyTest {
 	
 	@Test
 	public void addMenuItemTest() {
-		// Test if menu item list is not null and can contain menu item objects
-		assertNotNull("Test if menu item array list exists", menuItemTest);
+		// Menu Item List is not null and can contain Menu item Objects
+		assertNotNull("Test if menu item array list exists", C206_CaseStudy.MenuItemList);
 		
-		//given an empty menu item list, after adding 1 menu item object, the size of the list is 1
-		menuItemTest.add(chknRice);
-		assertEquals("Test if menu item arraylist size is 1", 1, menuItemTest.size());
+		//Given an empty Menu list, after adding 3rd Menu item, the size of the list is 3
+		C206_CaseStudy.addMenuItem(C206_CaseStudy.MenuItemList);
+		assertEquals("Test if menu item arraylist size is 1", 3, C206_CaseStudy.MenuItemList.size());
 		
-		// test if object added is the same as the first object in menu item array list
-		assertSame("Test if object added matches object passed in", chknRice, menuItemTest.get(0));
+		//assigned menu item added to item object, check where its the same.
+		menuitem = C206_CaseStudy.MenuItemList.get(2);
+		assertEquals("Check if Menu item ArrayList is empty", menuitem.getName(), C206_CaseStudy.MenuItemList.get(2).getName());
 	}
+
 	
 	@Test	
 	public void deleteMenuItemTest() {
 		// Test if menu item list is not null and can contain menu item objects
-		assertNotNull("Test if menu item array list exists", menuItemTest);
-		
-		//given an empty menu item list, after adding 1 menu item object, the size of the list is 1
-		menuItemTest.add(chknRice);
-		assertEquals("Test if menu item arraylist size is 1", 1, menuItemTest.size());
-		
+		assertNotNull("Test if menu item array list exists", C206_CaseStudy.MenuItemList);
+
+		//Given an empty Menu list, after adding 3rd Menu item, the size of the list is 3
+		C206_CaseStudy.addMenuItem(C206_CaseStudy.MenuItemList);
+		assertEquals("Test if menu item arraylist size is 1", 3, C206_CaseStudy.MenuItemList.size());
+				
 		//Given an item in Menu List, after deleting the Menu Item, the size of the list is 0
-		menuItemTest.remove(chknRice);
-		assertEquals("Test if that Menu ArrayList size is 0", 0, menuItemTest.size());
+		C206_CaseStudy.deleteMenuItem(C206_CaseStudy.MenuItemList);
+		assertEquals("Test if that Menu ArrayList size is 0", 2 , C206_CaseStudy.MenuItemList.size());
 		
 	}
+	
 	
 	@Test	
 	public void viewMenuItemTest() {
 		// Test if menu item list is not null and can contain menu item objects
-		assertNotNull("Test if menu item array list exists", menuItemTest);
+		assertNotNull("Test if menu item array list exists", C206_CaseStudy.MenuItemList);
 		
 		//test if Menu item ArrayList is empty
-		assertEquals("Check if Menu item ArrayList is empty", 0, menuItemTest.size());
+		assertEquals("Check if Menu item ArrayList is empty", 2, C206_CaseStudy.MenuItemList.size());
 		
-		//given an empty menu item list, after adding 1 menu item object, the size of the list is 1
-		menuItemTest.add(chknRice);
-		assertEquals("Test if menu item arraylist size is 1", 1, menuItemTest.size());
+		//Given an empty Menu list, after adding 3rd Menu item, the size of the list is 3
+		C206_CaseStudy.addMenuItem(C206_CaseStudy.MenuItemList);
+		assertEquals("Test if menu item arraylist size is 1", 3, C206_CaseStudy.MenuItemList.size());
+		menuitem = C206_CaseStudy.MenuItemList.get(2);
 		
-		//test if the expected output string same as the list of Item retrieved from menuItemTest ArrayList
-		String output ="";
-	
-		for (MenuItem mi : menuItemTest) {
-			output += String.format("%-10s %-10s %-20b %-10s\n", mi.getCategory(), mi.getName(), mi.isHealthyChoice(), mi.getPrice());
-		}
-		String expected1 = String.format("%-10s %-10s %-20b %-10s\n","Asian","Chicken Rice",true,3.50);
-		
-		assertEquals("Check that the item output is same as expected output", expected1, output);
-		
+		//test if menu item list can display
+		C206_CaseStudy.viewAllMenuItem(C206_CaseStudy.MenuItemList);	
 	}
 	
 	@Test
