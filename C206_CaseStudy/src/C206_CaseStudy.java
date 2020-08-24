@@ -6,13 +6,13 @@ public class C206_CaseStudy {
 	static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
 	static ArrayList<Menu> menuList = new ArrayList<Menu>();
 	static ArrayList<Order> orderList = new ArrayList<Order>();
-	public static String menuName;
-	public static int menuSize;
-	public static int menuMonth;
-	public static ArrayList<MenuItem> menuContent=new ArrayList<MenuItem>();
 	public static void main(String[] args) {
 
-		
+		//camcorderList.add(new Camcorder("CC001", "Sony HDR-CX405", 35));
+		//String category, String name, boolean healthyChoice, double price
+		MenuItemList.add(new MenuItem("Western", "Fish and Chips", false, 4.00));
+		MenuItemList.add(new MenuItem("Asian", "Wanton Noodles", false, 3.00));
+		MenuItemList.add(new MenuItem("Vegetarian", "Salad", true,6.00 ));
 		int option = 0;
 		
 		while (option !=10) {
@@ -39,44 +39,48 @@ public class C206_CaseStudy {
 				
 			}else if(option == 6) {
 				//create menu object
-				createMenuFields();
-				C206_CaseStudy.createMenuObject(menuList, menuName, menuSize, menuMonth, menuContent);
+				C206_CaseStudy.createMenu(menuList);
 				
 			}else if(option == 7) {
 				//delete menu object
-				C206_CaseStudy.getDeleteMenuField();
+				C206_CaseStudy.deleteMenu(menuList);
 				
 			}else if(option == 8) {
 				//view all Menu objects
-				System.out.println(C206_CaseStudy.viewAllMenu(menuList));
-			
-			}
-			
+				C206_CaseStudy.viewAllMenu(menuList);				
+			}			
 			else if (option == 9) {
 				C206_CaseStudy.orderMenu();
-				int choice = Helper.readInt("Enter order choice: ");
-				
+				int choice = Helper.readInt("Enter order choice: ");				
+
 				if (choice == 1) {
 					C206_CaseStudy.addOrder(orderList);
-				}			
+				}						
 				else if (choice == 2) {
 					C206_CaseStudy.deleteOrder(orderList);
 				}
 				else if (choice == 3) {
 					C206_CaseStudy.viewOrder(orderList);
-				}
+				}			
+				else if (choice ==4) {
+					System.out.println("Thank you for ordering!");
+					C206_CaseStudy.optionMenu();
+				}						
 				else {
 					System.out.println("You have entered an invalid order choice");
+
 				}	
+
 			}
 			else {
 				if(option!=9) {
-				System.out.println("Invalid Option");
+					System.out.println("Invalid Option");
 				}
 			}
 		}
 		System.out.println("Thank You");
 	}
+				
 	
 	public static void optionMenu() {
 		Helper.line(60,"=");
@@ -103,6 +107,7 @@ public class C206_CaseStudy {
 		System.out.println("1. Add Order");
 		System.out.println("2. Delete Order");
 		System.out.println("3. View Order");
+		System.out.println("4. Exit Order Option");
 		
 	}
 	
@@ -140,25 +145,20 @@ public class C206_CaseStudy {
 		System.out.println("DELETE MENU ITEM");
 		Helper.line(60,"=");
 		
-		boolean deleted = false;
 		String itemDelete = Helper.readString("Enter Item's Name To Delete: ");
 		
-		for (int i=0; i<MenuItemList.size();i++) {
+		for (int i = 0; i < MenuItemList.size(); i++) {
 			if(MenuItemList.get(i).getName().toLowerCase().equalsIgnoreCase(itemDelete)) {
-				deleted = true;
-			}
-			
-			if (deleted == true) {
 				MenuItemList.remove(i);
-				System.out.println("Menu Item Deleted");
-			}else if (deleted == false){
-				System.out.println("Menu Item Not Deleted");
+				System.out.println("Item Deleted");
+				break;
+				
 			} else {
-				System.out.println("Menu Item Does Not Exist");
-		}
+				System.out.println("Item Not Deleted");
+			}
 		}
 	}
-
+	
 	//===================================== view menu item =============================================
 	public static void viewAllMenuItem(ArrayList<MenuItem> MenuItemList) {
 		Helper.line(60,"=");
@@ -166,11 +166,12 @@ public class C206_CaseStudy {
 		Helper.line(60,"=");
 		
 		String output = "";
-		
+
 		output += String.format("%-10s %-10s %-20s %-10s\n", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE");
 
+		output += String.format("%-20s %-20s %-30s %-30s\n", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE");
 		for (int i = 0; i < MenuItemList.size(); i++) {
-			output += String.format("%-10s %-10s %-20b %-10s\n", MenuItemList.get(i).getCategory(), MenuItemList.get(i).getName(), 
+			output += String.format("%-20s %-20s %-30b %-30s\n", MenuItemList.get(i).getCategory(), MenuItemList.get(i).getName(), 
 					MenuItemList.get(i).isHealthyChoice(),MenuItemList.get(i).getPrice());
 			
 		}
@@ -229,21 +230,22 @@ public class C206_CaseStudy {
 	}
 
 	
-	//Initialize Menu object fields
-	public static void createMenuFields() {
+	//create a Menu object and append to Menu Arraylist global variable, checks for duplicate MenuItem entries and validates MenuItem actually 
+	//exists in MenuItem global ArrayList variable
+	public static void createMenu(ArrayList<Menu> menuList) {
 	Helper.line(60,"=");
 	System.out.println("CREATE NEW MENU");
 	Helper.line(60,"=");
-
-	menuName=Helper.readString("Enter Name of Menu >");
-	menuMonth=Helper.readInt("Please enter Menu's month >");
 	
-	if(menuMonth>=1 && menuMonth<=12) {
-	 menuSize=Helper.readInt("Please enter amount of items in Menu >");
-	if(menuSize<=MenuItemList.size()) {
+	String displayName=Helper.readString("Enter Name of Menu >");
+	int month=Helper.readInt("Please enter Menu's month >");
+	
+	if(month>=1 && month<=12) {
+	int numberOfItems=Helper.readInt("Please enter amount of items in Menu >");
+	if(numberOfItems<=MenuItemList.size()) {
 		int count=0;
-
-		while(count<menuSize) {
+		ArrayList<MenuItem> menuSelection=new ArrayList<MenuItem>();
+		while(count<numberOfItems) {
 			boolean exists=false;
 			MenuItem selectedMenuItem=null;
 			viewAllMenuItem(MenuItemList);
@@ -255,25 +257,26 @@ public class C206_CaseStudy {
 				}
 			}
 			if(exists) {
-				if(menuContent.size()>0) {
+				if(menuSelection.size()>0) {
 				boolean alreadyAdded=false;
-				if(menuContent.contains(selectedMenuItem)) {
+				if(menuSelection.contains(selectedMenuItem)) {
 					alreadyAdded=true;
 				}
 				if(alreadyAdded) {System.out.println("The following item is already added to the Menu Item list!");}
 				else {
-					menuContent.add(selectedMenuItem);	
-					count++;
+					menuSelection.add(selectedMenuItem);	
 				}
 				}
-				else if (menuContent.size()==0) {
-					menuContent.add(selectedMenuItem);	
+				else if (menuSelection.size()==0) {
+				menuSelection.add(selectedMenuItem);	
 				count++;
 				}
 			}
 			else {System.out.println("This menu item does not exist");}
 		}
-
+		Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
+		menuList.add(newMenu);
+		System.out.println("Menu added!");
 	}
 	else {
 		System.out.println("Not enough unqiue items in Menu Item List!");
@@ -284,9 +287,9 @@ public class C206_CaseStudy {
 	}
 	}
 	// View All Menu objects from Menu Array global variable
-	public static String viewAllMenu(ArrayList<Menu> menuList) {
+	public static void viewAllMenu(ArrayList<Menu> menuList) {
 		if(menuList.size()==0) {
-			return "Menu bank is empty.";
+			System.out.println("Menu bank is empty.");
 		}
 		else {
 			Helper.line(60,"=");
@@ -297,110 +300,119 @@ public class C206_CaseStudy {
 			for(Menu i:menuList) {
 				output+=i.toString();
 			}
-			return output;
+			System.out.println(output);
 		}
-		
 	}
-	
-	//create Menu with fields
-	public static void createMenuObject(ArrayList<Menu> menuList,String displayName,int month,int numberOfItems,ArrayList<MenuItem> menuSelection) {
-		Menu newMenu=new Menu(displayName,month,numberOfItems,menuSelection);
-		menuList.add(newMenu);
-		System.out.println("Menu added!");
-	}
-	
-	public static void getDeleteMenuField() {
+	// Delete a Menu Object from Menu Array global variable
+	public static void deleteMenu(ArrayList<Menu> menuList) {
 		Helper.line(60,"=");
 		System.out.println("DELETE MENU");
 		Helper.line(60,"=");
-		System.out.println(viewAllMenu(menuList));
+		viewAllMenu(menuList);
 		
 		String selectedMenu = Helper.readString("Enter Menu Name to Delete: ");
-		 deleteMenu(menuList ,selectedMenu);
-	}
-	// Delete a Menu Object from Menu Array global variable
-	public static String deleteMenu(ArrayList<Menu> menuList,String menuName) {
-
-		if(menuList.size()>0) {
-			boolean foundMenu=false;
+		
+		
 		for (int i = 0; i < menuList.size(); i++) {
-			if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(menuName)) {
+			if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(selectedMenu)) {
 				menuList.remove(i);
-				foundMenu=true;
-			
-				return "Menu deleted.";
-				
-			} 
-		}
-		if(!foundMenu) {
-			
-				return "Menu not found!";
-			
+				System.out.println("Menu deleted.");
+				break;
+			} else {
+				System.out.println("Cannot find Menu.");
+			}
 		}
 			
 	}
-		
-			return "Menu array is empty!";
-		
-		}
-
-	
-	//ADD ORDER
 	
 	
 	public static void addOrder(ArrayList<Order> orderList) {
 		
+		boolean isFound = false;
+		
+		//Call the view all menu items for user to choose from
+		C206_CaseStudy.viewAllMenuItem(MenuItemList);
+		
 		ArrayList <MenuItem> userChoices = new ArrayList<MenuItem>();
 		
-		String studentID = Helper.readString("Enter your student ID: ");
-		String orderDate = Helper.readString("Enter the order date in the format dd/mm/yyyy: ");
+		String studentID = Helper.readString("Enter your student ID> ");
+		String orderDate = Helper.readString("Enter the order date in the format dd/mm/yyyy > ");
+		//num of Meals is how many food items the student or parents wants to order
 		int numOfMeals = Helper.readInt("Enter the amount of meals to order > ");
-		
+	
+		//
 		for (int orderObject = 0; orderObject < numOfMeals; orderObject++) {
-			String mealchoice = Helper.readString("Enter your meal choice: ");
+			String mealchoice = Helper.readString("Enter the name of the food > ");
 			for (MenuItem mealObject : MenuItemList) {
 				if (mealObject.getName().equalsIgnoreCase(mealchoice)) {
+					isFound = true;
 					userChoices.add(mealObject);
+					System.out.println("Your order is successful!");
 				}
 			}
+			
+			if (isFound == false) {
+				System.out.println("The menu item you entered could not be found");
+			}
 		}
-	
-		Order newOrder=new Order(studentID, orderDate, MenuItemList); 
+		Order newOrder=new Order(studentID, orderDate, userChoices); 
 		orderList.add(newOrder);
-		
 	}
 	
 	//DELETE ORDER
 	public static void deleteOrder(ArrayList<Order> orderList) {
-		
+	
 		boolean isDeleted = false;
-		String deleteItem = Helper.readString("Enter the date for order you wish to delete: ");
+		String deleteUser = Helper.readString("Enter your student ID > ");
+		String deleteItem = Helper.readString("Enter the date for order you wish to delete> ");
 		
 		for (int i=0; i<orderList.size(); i++ ) {
 			
-			if (deleteItem.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
-				orderList.remove(i);
-				isDeleted = true;
-				System.out.println("The order has been successfully deleted");
+			if (deleteUser.equalsIgnoreCase(orderList.get(i).getStudentid())) {
+				if (deleteItem.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
+					orderList.remove(i);
+					isDeleted = true;
+					System.out.println("The order has been successfully deleted");
+				}
 			}
-			
-			else {
-				System.out.println("The date could not be found. ");
-			}
+		}
+		
+		if (isDeleted == false) {
+			System.out.println("An error has occured when deleting the menu item.");
 		}
 	}
 	
-	//VIEW ORDER
+	//VIEW ORDER Keen
 	public static void viewOrder(ArrayList<Order> orderList) {
-		
+	
+		boolean isFoundID = false;
+		boolean isFoundDate = false;
+		String studentID = Helper.readString("Enter your student ID to view your order > ");
+		String dateView = Helper.readString("Enter the date of the order you want to view > ");
 		String output = "";
 		output += String.format("%-20s %-20s %-20s\n", "STUDENT ID", "ORDER DATE", "MENU ITEM");
 		
 		for (int i=0; i<orderList.size(); i ++) {
-			output += String.format("%-20s %-20s %-20s\n", orderList.get(i).getStudentid(), orderList.get(i).getOrderDate(), orderList.get(i).getItems());
+			
+			if (studentID.equalsIgnoreCase(orderList.get(i).getStudentid())) {
+				isFoundID = true;
+				
+				if (dateView.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
+					output += String.format("%-20s %-20s %-20s\n", orderList.get(i).getStudentid(), orderList.get(i).getOrderDate(), orderList.get(i).getItems());
+					isFoundDate = true;
+				}
+			}
+			
+		}
+		System.out.println(output);
+		
+		if (isFoundID == false) {
+			System.out.println("Your student ID cannot be found.");
 		}
 		
-		System.out.println(output);
+		if (isFoundDate == false ) {
+			System.out.println("The date you specified could not be found.");
+		}
 		
 	}
 }
