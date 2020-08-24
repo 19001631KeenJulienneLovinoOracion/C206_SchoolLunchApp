@@ -38,8 +38,8 @@ public class C206_CaseStudy {
 				
 			}else if(option == 6) {
 				//view all Menu objects
-				C206_CaseStudy.viewAllMenu(menuList);
-				
+				System.out.println(C206_CaseStudy.viewAllMenu(menuList));
+			
 			}
 			
 			else if (option == 7) {
@@ -201,6 +201,7 @@ public class C206_CaseStudy {
 				if(alreadyAdded) {System.out.println("The following item is already added to the Menu Item list!");}
 				else {
 					menuSelection.add(selectedMenuItem);	
+					count++;
 				}
 				}
 				else if (menuSelection.size()==0) {
@@ -223,9 +224,9 @@ public class C206_CaseStudy {
 	}
 	}
 	// View All Menu objects from Menu Array global variable
-	public static void viewAllMenu(ArrayList<Menu> menuList) {
+	public static String viewAllMenu(ArrayList<Menu> menuList) {
 		if(menuList.size()==0) {
-			System.out.println("Menu bank is empty.");
+			return "Menu bank is empty.";
 		}
 		else {
 			Helper.line(60,"=");
@@ -236,8 +237,9 @@ public class C206_CaseStudy {
 			for(Menu i:menuList) {
 				output+=i.toString();
 			}
-			System.out.println(output);
+			return output;
 		}
+		
 	}
 	// Delete a Menu Object from Menu Array global variable
 	public static void deleteMenu(ArrayList<Menu> menuList) {
