@@ -143,5 +143,18 @@ public class C206_CaseStudyTest {
 		assertEquals("Test if that Menu ArrayList size is 0", 0, menuTest.size());
 	
 	}
+	
+	@Test
+	public void addOrder() {
+		// Test if menu item list is not null and can contain menu item objects
+		assertNotNull("Test if menu item array list exists", menuItemTest);
+		
+		//given an empty menu item list, after adding 1 menu item object, the size of the list is 1
+		menuItemTest.add(chknRice);
+		assertEquals("Test if menu item arraylist size is 1", 1, menuItemTest.size());
+		
+		// test if object added is the same as the first object in menu item array list
+		assertSame("Test if object added matches object passed in", chknRice, menuItemTest.get(0));
+	}
 
 }
