@@ -1,4 +1,8 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class C206_CaseStudy {
 	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
@@ -15,64 +19,65 @@ public class C206_CaseStudy {
 		
 		int option = 0;
 		
-		while (option !=8) {
+		while (option !=10) {
 			C206_CaseStudy.optionMenu();
 			option = Helper.readInt("Enter Option > ");
 			
 			if(option == 1) {
 				// add menu item
 				C206_CaseStudy.addMenuItem(MenuItemList);
-				
-				
 			}else if(option == 2) {
 				//delete menu item
 				C206_CaseStudy.deleteMenuItem(MenuItemList);
-				
 			} else if (option == 3) {
 				// view menu item
 				C206_CaseStudy.viewAllMenuItem(MenuItemList);
-			
-			}else if(option == 4) {
+			}
+			else if(option == 4) {
+				//search menu item 
+				C206_CaseStudy.searchMenuItem(MenuItemList);
+				
+			}else if(option == 5) {
+				//update menu item 
+				C206_CaseStudy.updateMenuItem(MenuItemList);
+				
+			}else if(option == 6) {
 				//create menu object
 				createMenuFields();
 				C206_CaseStudy.createMenuObject(menuList, menuName, menuSize, menuMonth, menuContent);
 				
-			}else if(option == 5) {
+			}else if(option == 7) {
 				//delete menu object
 				C206_CaseStudy.getDeleteMenuField();
 				
-			}else if(option == 6) {
+			}else if(option == 8) {
 				//view all Menu objects
 				System.out.println(C206_CaseStudy.viewAllMenu(menuList));
 			
 			}
 			
-			else if (option == 7) {
+			else if (option == 9) {
 				C206_CaseStudy.orderMenu();
 				int choice = Helper.readInt("Enter order choice: ");
 				
 				if (choice == 1) {
 					C206_CaseStudy.addOrder(orderList);
-				}
-				
+				}			
 				else if (choice == 2) {
 					C206_CaseStudy.deleteOrder(orderList);
 				}
-				
 				else if (choice == 3) {
 					C206_CaseStudy.viewOrder(orderList);
 				}
-				
 				else {
 					System.out.println("You have entered an invalid order choice");
-				}
-				
+				}	
 			}
 			else {
-				if(option!=7) {
+				if(option!=9) {
 				System.out.println("Invalid Option");
-			}
 				}
+			}
 		}
 		System.out.println("Thank You");
 	}
@@ -84,11 +89,13 @@ public class C206_CaseStudy {
 		System.out.println("1. Add Menu Item");
 		System.out.println("2. Delete Menu Item");
 		System.out.println("3. View Menu Item");
-		System.out.println("4. Create Menu");
-		System.out.println("5. Delete Menu");
-		System.out.println("6. View All Menus");
-		System.out.println("7. Create Order");
-		System.out.println("8. Quit");
+		System.out.println("4. Search Menu Item");
+		System.out.println("5. Update Menu Item");
+		System.out.println("6. Create Menu");
+		System.out.println("7. Delete Menu");
+		System.out.println("8. View All Menus");
+		System.out.println("9. Create Order");
+		System.out.println("10. Quit");
 	}
 	
 	//Sub menu for the order method
@@ -102,8 +109,6 @@ public class C206_CaseStudy {
 		System.out.println("3. View Order");
 		
 	}
-	
-
 	
 	// ==================================== Add menu item ==============================================
 	public static void addMenuItem(ArrayList<MenuItem> MenuItemList) {
@@ -158,7 +163,6 @@ public class C206_CaseStudy {
 		}
 	}
 
-	
 	//===================================== view menu item =============================================
 	public static void viewAllMenuItem(ArrayList<MenuItem> MenuItemList) {
 		Helper.line(60,"=");
@@ -168,14 +172,66 @@ public class C206_CaseStudy {
 		String output = "";
 		
 		output += String.format("%-10s %-10s %-20s %-10s\n", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE");
+
 		for (int i = 0; i < MenuItemList.size(); i++) {
 			output += String.format("%-10s %-10s %-20b %-10s\n", MenuItemList.get(i).getCategory(), MenuItemList.get(i).getName(), 
 					MenuItemList.get(i).isHealthyChoice(),MenuItemList.get(i).getPrice());
+			
 		}
 		System.out.println(output);
 	}
 	
+	//===================================== search menu item =============================================
+	public static void searchMenuItem(ArrayList<MenuItem> MenuItemList) {		
+		Helper.line(60,"=");
+		System.out.println("SEARCH MENU ITEM");
+		Helper.line(60,"=");
+		
+		String output = "";
+		
+		String search = Helper.readString("Enter Item's Name You Looking For: ");
+		
+		Helper.line(60,"-");
+		System.out.println(String.format("%-10s %-10s %-20s %-10s", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE"));
+		Helper.line(60,"-");
+		
+		for (int i = 0; i < MenuItemList.size(); i++) {
+			if (MenuItemList.get(i).getName().equalsIgnoreCase(search)){
+				output += String.format("%-10s %-10s %-20b %-10s\n", MenuItemList.get(i).getCategory(), MenuItemList.get(i).getName(), 
+						MenuItemList.get(i).isHealthyChoice(),MenuItemList.get(i).getPrice());
+			}
+		}
+		System.out.println(output);
+	}
+		
+	//===================================== update menu item =============================================
+	public static void updateMenuItem(ArrayList<MenuItem> MenuItemList) {
+		boolean updated = false;
+		C206_CaseStudy.viewAllMenuItem(MenuItemList);
+		
+		Helper.line(60,"=");
+		System.out.println("UPDATE MENU ITEM");
+		Helper.line(60,"=");
 	
+		String searchName = Helper.readString("Enter Item's Name You Want To Update: ");
+		String newName = Helper.readString("Enter Item's New Name: ");
+		double newPrice = Helper.readDouble("Enter Item's New Price: ");
+		
+		for (MenuItem mi : MenuItemList) {
+			if (mi.getName().equals(searchName)&& newPrice >0){
+				updated = true;
+				mi.setName(newName);
+				mi.setPrice(newPrice);
+			}
+		}
+		
+		if(updated == true ) {
+			System.out.println("Updated");
+		} else {
+			System.out.println("Cannot Update. Invalid price value");
+		}	
+	}
+
 	
 	//Initialize Menu object fields
 	public static void createMenuFields() {
