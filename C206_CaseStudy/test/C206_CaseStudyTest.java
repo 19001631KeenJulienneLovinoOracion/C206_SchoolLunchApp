@@ -67,7 +67,6 @@ public class C206_CaseStudyTest {
 		
 	}
 	
-	
 	@Test	
 	public void viewMenuItemTest() {
 		// Test if menu item list is not null and can contain menu item objects
@@ -80,6 +79,7 @@ public class C206_CaseStudyTest {
 		C206_CaseStudy.addMenuItem(C206_CaseStudy.MenuItemList);
 		assertEquals("Test if menu item arraylist size is 1", 3, C206_CaseStudy.MenuItemList.size());
 		menuitem = C206_CaseStudy.MenuItemList.get(2);
+		assertEquals("Check if Menu item added is the same ",menuitem.getName(), C206_CaseStudy.MenuItemList.get(2).getName());
 		
 		//test if menu item list can display
 		C206_CaseStudy.viewAllMenuItem(C206_CaseStudy.MenuItemList);	
