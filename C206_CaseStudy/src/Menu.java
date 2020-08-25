@@ -38,7 +38,7 @@ public class Menu {
 	public String toString() {
 		String output="";
 		String menuItems="";
-		for(MenuItem i:items) {
+		for(MenuItem i:this.items) {
 			menuItems+=i.getName()+", ";
 		}
 	
