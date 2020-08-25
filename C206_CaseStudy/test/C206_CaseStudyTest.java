@@ -73,7 +73,7 @@ public class C206_CaseStudyTest {
 		// Test if menu item list is not null and can contain menu item objects
 		assertNotNull("Test if menu item array list exists", C206_CaseStudy.MenuItemList);
 		
-		//test if Menu item ArrayList is empty
+		//test if Menu item ArrayList is size 2
 		assertEquals("Check if Menu item ArrayList is empty", 2, C206_CaseStudy.MenuItemList.size());
 		
 		//Given an empty Menu list, after adding 3rd Menu item, the size of the list is 3
@@ -83,6 +83,31 @@ public class C206_CaseStudyTest {
 		
 		//test if menu item list can display
 		C206_CaseStudy.viewAllMenuItem(C206_CaseStudy.MenuItemList);	
+	}
+	
+	@Test	
+	public void searchMenuItemTest() {
+		// Test if menu item list is not null and can contain menu item objects
+		assertNotNull("Test if menu item array list exists", C206_CaseStudy.MenuItemList);
+		
+		//test if Menu item ArrayList is size 2
+		assertEquals("Check if Menu item ArrayList is empty", 2, C206_CaseStudy.MenuItemList.size());
+		
+		// implement search method
+		C206_CaseStudy.searchMenuItem(C206_CaseStudy.MenuItemList);
+	}
+	
+	@Test	
+	public void updateMenuItemTest() {
+		// Test if menu item list is not null and can contain menu item objects
+		assertNotNull("Test if menu item array list exists", C206_CaseStudy.MenuItemList);
+		
+		//test if Menu item ArrayList is size 2
+		assertEquals("Check if Menu item ArrayList is empty", 2, C206_CaseStudy.MenuItemList.size());
+				
+		//implements update method
+		C206_CaseStudy.updateMenuItem(C206_CaseStudy.MenuItemList);
+		
 	}
 	
 	@Test
@@ -139,6 +164,19 @@ String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO
 		
 		
 	
+	}
+	
+	@Test
+	public void addOrder() {
+		// Test if menu item list is not null and can contain menu item objects
+		assertNotNull("Test if menu item array list exists", menuItemTest);
+		
+		//given an empty menu item list, after adding 1 menu item object, the size of the list is 1
+		menuItemTest.add(chknRice);
+		assertEquals("Test if menu item arraylist size is 1", 1, menuItemTest.size());
+		
+		// test if object added is the same as the first object in menu item array list
+		assertSame("Test if object added matches object passed in", chknRice, menuItemTest.get(0));
 	}
 
 }
