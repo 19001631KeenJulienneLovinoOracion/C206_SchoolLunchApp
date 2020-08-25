@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class C206_CaseStudy {
 	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
@@ -9,7 +10,7 @@ public class C206_CaseStudy {
 	public static String menuName;
 	public static int menuSize;
 	public static int menuMonth;
-	public static ArrayList<MenuItem> menuContent=new ArrayList<MenuItem>();
+
 	
 	public static void main(String[] args) throws CloneNotSupportedException {
 
@@ -20,7 +21,7 @@ public class C206_CaseStudy {
 		MenuItemList.add(new MenuItem("Vegetarian", "Salad", true,6.00 ));
 		int option = 0;
 		
-		while (option !=10) {
+		while (option !=11) {
 			C206_CaseStudy.optionMenu();
 			option = Helper.readInt("Enter Option > ");
 			
@@ -45,7 +46,7 @@ public class C206_CaseStudy {
 			}else if(option == 6) {
 				//create menu object
 				createMenuFields();
-				C206_CaseStudy.createMenuObject(menuList, menuName, menuSize, menuMonth, menuContent);
+
 				
 			}else if(option == 7) {
 				//delete menu object
@@ -54,8 +55,12 @@ public class C206_CaseStudy {
 			}else if(option == 8) {
 				//view all Menu objects
 				System.out.println(C206_CaseStudy.viewAllMenu(menuList));			
-			}		
-			else if (option == 9) {
+			}else if(option == 9) {
+				//update menu object
+				C206_CaseStudy.getUpdateMenuField();
+			}				
+
+			else if (option == 10) {
 				C206_CaseStudy.orderMenu();
 				int choice = Helper.readInt("Enter order choice: ");				
 
@@ -78,7 +83,7 @@ public class C206_CaseStudy {
 				}	
 			}
 			else {
-				if(option!=9) {
+				if(option!=11) {
 					System.out.println("Invalid Option");
 				}
 			}
@@ -99,8 +104,9 @@ public class C206_CaseStudy {
 		System.out.println("6. Create Menu");
 		System.out.println("7. Delete Menu");
 		System.out.println("8. View All Menus");
-		System.out.println("9. Create Order");
-		System.out.println("10. Quit");
+		System.out.println("9. Update A Menu");
+		System.out.println("10. Create Order");
+		System.out.println("11. Quit");
 	}
 	
 	//Sub menu for the order method
@@ -275,12 +281,19 @@ public class C206_CaseStudy {
 		
 		menuName=Helper.readString("Enter Name of Menu >");
 		menuMonth=Helper.readInt("Please enter Menu's month >");
-
+		Random ranMenuItem=new Random();
 		if(menuMonth>=1 && menuMonth<=12) {
 		 menuSize=Helper.readInt("Please enter amount of items in Menu >");
 		if(menuSize<=MenuItemList.size()) {
+			int choice=0;
+			while(choice!=1 && choice!=2)
+			{
+				choice=Helper.readInt("Would You like to randomly generate the menu items or manually select them?\nEnter 1 for manual selection,2 for automatic generation >");
+			}
 			int count=0;
+			ArrayList<MenuItem> menuContent=new ArrayList<MenuItem>();
 			while(count<menuSize) {
+				if(choice==1) {
 				boolean exists=false;
 				MenuItem selectedMenuItem=null;
 				viewAllMenuItem(MenuItemList);
@@ -310,7 +323,20 @@ public class C206_CaseStudy {
 				}
 				else {System.out.println("This menu item does not exist");}
 			}
+			
+			else if (choice==2){
 
+				int random=ranMenuItem.nextInt(MenuItemList.size());
+				if(!menuContent.contains(MenuItemList.get(random))) {
+					menuContent.add(MenuItemList.get(random));
+					count++;
+					System.out.println("lol");
+				}
+
+			}
+
+		}
+		C206_CaseStudy.createMenuObject(menuList, menuName, menuMonth, menuSize, menuContent);
 		}
 		else {
 			System.out.println("Not enough unqiue items in Menu Item List!");
@@ -378,6 +404,53 @@ public class C206_CaseStudy {
 				return "Menu array is empty!";
 
 			}	
+			
+			public static void getUpdateMenuField() {
+				Helper.line(60,"=");
+				System.out.println("UPDATE MENU");
+				Helper.line(60,"=");
+				System.out.println(viewAllMenu(menuList));
+
+				String selectedMenu = Helper.readString("Enter Menu Name to Update: ");
+				 System.out.println(updateMenu(menuList ,selectedMenu));
+				}
+				// Delete a Menu Object from Menu Array global variable
+				public static String updateMenu(ArrayList<Menu> menuList,String menuName) {
+
+					if(menuList.size()>0) {
+						boolean foundMenu=false;
+
+				for (int i = 0; i < menuList.size(); i++) {
+					if(menuList.get(i).getDisplayName().toLowerCase().equalsIgnoreCase(menuName)) {
+						String newName=Helper.readString("Enter new Menu Name >");
+						int newMonth=Helper.readInt("Enter the month for this menu>");
+
+						foundMenu=true;
+
+						return doUpdateMenu(newName,newMonth,menuList.get(i));
+
+					} 
+				}
+				if(!foundMenu) {
+
+						return "Menu not found!";
+
+				}
+
+			}
+					return "Menu array is empty!";
+
+				}
+				
+				public static String doUpdateMenu(String name,int month,Menu target) {
+
+					if(month<=12 && month>=1) {
+						target.setDisplayName(name);
+						target.setMonth(month);		
+						return "Menu Updated.";
+					}
+					else {return "Month value is invalid!";}
+				}
 	
 	public static void addOrder(ArrayList<Order> orderList) {
 		
