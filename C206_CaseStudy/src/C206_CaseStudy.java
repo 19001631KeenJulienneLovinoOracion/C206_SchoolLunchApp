@@ -118,7 +118,7 @@ public class C206_CaseStudy {
 		Helper.line(60,"=");
 		
 		boolean existed = false;
-		
+		boolean invalid = false;
 		String category = Helper.readString("Enter Item's Category: ");
 		String name = Helper.readString("Enter Item's Name: ");
 		boolean healthyChoice = Helper.readBoolean("Is The Item A Healthier Choice? (Y/N) ");
@@ -127,18 +127,22 @@ public class C206_CaseStudy {
 		for (MenuItem mi : MenuItemList) {
 			if (mi.getName().equalsIgnoreCase(name)) {
 				existed = true;
+			} else if (existed == false && price <=0) {
+				invalid = true;
+			} else{
+				existed = false;
 			}
 		}
-		if (existed == false) {
+		if (existed == false && price > 0 ) {
 			MenuItem menuItem = new MenuItem(category, name, healthyChoice, price);
 			MenuItemList.add(menuItem);
 			System.out.println("Menu Item Added");
-		}else {
+		}else if (invalid == true) {
+			System.out.println("invalid price value");
+		}else{
 			System.out.println("item exist");
 		}
-		
 	}
-
 	//===================================== delete menu item ===========================================
 	public static void deleteMenuItem(ArrayList<MenuItem> MenuItemList) {
 		Helper.line(60,"=");
@@ -160,8 +164,7 @@ public class C206_CaseStudy {
 				System.out.println("Item Not Deleted");
 			}				
 		}
-	
-	
+
 	//===================================== view menu item =============================================
 	public static void viewAllMenuItem(ArrayList<MenuItem> MenuItemList) {
 		Helper.line(60,"=");
@@ -205,6 +208,8 @@ public class C206_CaseStudy {
 	//===================================== update menu item =============================================
 	public static void updateMenuItem(ArrayList<MenuItem> MenuItemList) {
 		boolean updated = false;
+		boolean exist = false;
+		boolean invalid = false;
 		C206_CaseStudy.viewAllMenuItem(MenuItemList);
 		
 		Helper.line(60,"=");
@@ -216,18 +221,42 @@ public class C206_CaseStudy {
 		double newPrice = Helper.readDouble("Enter Item's New Price: ");
 		
 		for (MenuItem mi : MenuItemList) {
+			if (!mi.getName().equals(searchName)) {
+				exist = false;
+			}
 			if (mi.getName().equals(searchName)&& newPrice >0){
 				updated = true;
+				exist = true;
 				mi.setName(newName);
 				mi.setPrice(newPrice);
 			}
+			if (!mi.getName().equals(searchName) && newPrice <=0){
+				exist = true;
+				invalid = true;
+			}
 		}
 		
-		if(updated == true ) {
-			System.out.println("Updated");
-		} else {
+		if(exist == true && updated == true) {
+			System.out.println("Menu Item Updated");
+		}else if (exist == false) {
+			System.out.println("Menu Item does not exist");
+		} else if(invalid == true) {
 			System.out.println("Cannot Update. Invalid price value");
-		}	
+		}
+		
+		// results after updating 
+		String output = "";
+		
+		Helper.line(20,"-");
+		System.out.println("UPDATED MENU ITEM LIST");
+		Helper.line(20,"-");
+		
+		for (int i = 0; i < MenuItemList.size(); i++) {
+			output += String.format("%-20s %-20s %-30b %-30s\n", MenuItemList.get(i).getCategory(), MenuItemList.get(i).getName(), 
+					MenuItemList.get(i).isHealthyChoice(),MenuItemList.get(i).getPrice());
+			
+		}
+		System.out.println(output);
 	}
 
 	
