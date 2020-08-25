@@ -6,7 +6,7 @@ public class C206_CaseStudy {
 	static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
 	static ArrayList<Menu> menuList = new ArrayList<Menu>();
 	static ArrayList<Order> orderList = new ArrayList<Order>();
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CloneNotSupportedException {
 
 		//camcorderList.add(new Camcorder("CC001", "Sony HDR-CX405", 35));
 		//String category, String name, boolean healthyChoice, double price
@@ -70,7 +70,6 @@ public class C206_CaseStudy {
 					System.out.println("You have entered an invalid order choice");
 
 				}	
-
 			}
 			else {
 				if(option!=9) {
@@ -165,23 +164,25 @@ public class C206_CaseStudy {
 			}				
 		}
 
-	//===================================== view menu item =============================================
+	//===================================== view menu item group by category =============================================
 	public static void viewAllMenuItem(ArrayList<MenuItem> MenuItemList) {
 		Helper.line(60,"=");
 		System.out.println("VIEW MENU ITEM");
 		Helper.line(60,"=");
 		
 		String output = "";
-
+		
+		MenuItemList.sort(new CategorySorter());
+		
 		output += String.format("%-20s %-20s %-30s %-30s\n", "CATEGORY", "NAME", "HEALTHY CHOICE", "PRICE");
-		for (int i = 0; i < MenuItemList.size(); i++) {
+		for(int i = 0; i < MenuItemList.size(); i++) {
 			output += String.format("%-20s %-20s %-30b %-30s\n", MenuItemList.get(i).getCategory(), MenuItemList.get(i).getName(), 
 					MenuItemList.get(i).isHealthyChoice(),MenuItemList.get(i).getPrice());
 			
 		}
 		System.out.println(output);
 	}
-	
+
 	//===================================== search menu item =============================================
 	public static void searchMenuItem(ArrayList<MenuItem> MenuItemList) {		
 		Helper.line(60,"=");
