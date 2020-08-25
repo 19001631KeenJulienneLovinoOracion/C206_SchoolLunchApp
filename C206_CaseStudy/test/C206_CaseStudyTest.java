@@ -166,6 +166,23 @@ String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO
 	
 	}
 	
+	
+	@Test	
+	public void updateMenuTest() {
+		// Test if menu list is not null and can contain menu item objects
+		assertNotNull("Test if menu item array list exists", C206_CaseStudy.menuList);
+		
+		//Add menu to menuList
+				Menu testMenu=new Menu("January Asia",1,2,C206_CaseStudy.MenuItemList);
+			C206_CaseStudy.menuList.add(testMenu);
+		String newName="January Western";
+		int newMonth=13;
+		//test that update method can demy invalid parameter i.e invalid month value
+		assertEquals(C206_CaseStudy.doUpdateMenu(newName, newMonth, C206_CaseStudy.menuList.get(0)),"Month value is invalid!");
+				
+		
+	}
+	
 	@Test
 	public void addOrder() {
 		// Test if menu item list is not null and can contain menu item objects
