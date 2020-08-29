@@ -1,12 +1,14 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class C206_CaseStudy {
 	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
 	//PLEASE PULL BEFORE MAKING CHANGES I BEG OF YOU
 	static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
 	static ArrayList<Menu> menuList = new ArrayList<Menu>();
 	static ArrayList<Order> orderList = new ArrayList<Order>();
+	static ArrayList<Account> accountList = new ArrayList<Account>();
 	public static String menuName;
 	public static int menuSize;
 	public static int menuMonth;
@@ -542,6 +544,35 @@ public class C206_CaseStudy {
 		}
 		
 	}
+	//Create Account
+	public static void createAccount(ArrayList<Account> accountList) {
+		Helper.line(60,"=");
+		System.out.println("CREATE NEW ACCOUNT");
+		Helper.line(60,"=");
+		boolean existing = false;
+		
+		String username = Helper.readString("Enter Username: ");
+		String pw = Helper.readString("Enter Password: ");
+		int cn = Helper.readInt("Enter Contact Number: ");
+		String id = Helper.readString("Enter ID: ");
+		
+		for (Account acc : accountList) {
+			if (acc.getUsername().equalsIgnoreCase(username)) {
+				existing = true;
+			}
+		}
+		if (existing == false) {
+			Account account = new Account(username,pw,id,cn);
+			accountList.add(account);
+			System.out.println("Account Created!");
+		}else {
+			System.out.println("Username Exists!");
+		}
+		
+	}
+		
+	
+	
 }
 
 
