@@ -570,6 +570,22 @@ public class C206_CaseStudy {
 		}
 		
 	}
+	
+	//View Account
+		public static void viewAccount(ArrayList<Account> accountList) {
+			Helper.line(60,"=");
+			System.out.println("VIEW ACCOUNTS");
+			Helper.line(60,"=");
+			
+			String output = "";
+			
+			output += String.format("%-10s %-10s %10s %10s\n", "USERNAME", "PASSWORD","STUDENT ID", "CONTACT NUMBER");
+			for (int i = 0; i < accountList.size(); i++) {
+				output += String.format("%-10s %-10s %10s %10s\n", accountList.get(i).getUsername(), accountList.get(i).getPassword(), accountList.get(i).getStudentid(), accountList.get(i).getContactnumber());
+			}
+			System.out.println(output);
+		}
+		
 		
 	
 	
