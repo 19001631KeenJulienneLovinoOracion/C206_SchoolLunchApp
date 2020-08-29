@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
+
+
 public class C206_CaseStudy {
 	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
 	//PLEASE PULL BEFORE MAKING CHANGES I BEG OF YOU
@@ -572,19 +574,68 @@ public class C206_CaseStudy {
 	}
 	
 	//View Account
-		public static void viewAccount(ArrayList<Account> accountList) {
-			Helper.line(60,"=");
-			System.out.println("VIEW ACCOUNTS");
-			Helper.line(60,"=");
-			
-			String output = "";
-			
-			output += String.format("%-10s %-10s %10s %10s\n", "USERNAME", "PASSWORD","STUDENT ID", "CONTACT NUMBER");
-			for (int i = 0; i < accountList.size(); i++) {
-				output += String.format("%-10s %-10s %10s %10s\n", accountList.get(i).getUsername(), accountList.get(i).getPassword(), accountList.get(i).getStudentid(), accountList.get(i).getContactnumber());
-			}
-			System.out.println(output);
+	public static void viewAccount(ArrayList<Account> accountList) {
+		Helper.line(60,"=");
+		System.out.println("VIEW ACCOUNTS");
+		Helper.line(60,"=");
+		
+		String output = "";
+		
+		output += String.format("%-10s %-10s %10s %10s\n", "USERNAME", "PASSWORD","STUDENT ID", "CONTACT NUMBER");
+		for (int i = 0; i < accountList.size(); i++) {
+			output += String.format("%-10s %-10s %10s %10s\n", accountList.get(i).getUsername(), accountList.get(i).getPassword(), accountList.get(i).getStudentid(), accountList.get(i).getContactnumber());
 		}
+		System.out.println(output);
+	}
+	
+	//Update Account
+	public static void updateAccount(ArrayList<Account> accountList) {
+		Helper.line(60,"=");
+		System.out.println("UPDATE ACCOUNT");
+		Helper.line(60,"=");
+		boolean exists = false;
+		boolean existing = false;
+		
+		String userUpdate = Helper.readString("Enter Username To Update: ");
+		
+		String newusername = Helper.readString("Enter New Username: ");
+		int newcn = Helper.readInt("Enter New Contact Number: ");
+		String newpw = Helper.readString("Enter New Password: ");
+		
+		for (Account acc : accountList) {
+			if (acc.getUsername().equalsIgnoreCase(userUpdate)) {
+				exists = true;
+			}
+		
+			
+		if(exists == true) {
+			for (Account acct : accountList) {
+				if (acct.getUsername().equalsIgnoreCase(newusername)) {
+					existing = true;
+				}
+			}
+			if(existing == false) {
+				for (int i = 0; i < accountList.size(); i++) {
+					if(accountList.get(i).getUsername().toLowerCase().equalsIgnoreCase(userUpdate)) {
+						accountList.get(i).setUsername(newusername);
+						accountList.get(i).setPassword(newpw);
+						accountList.get(i).setContactnumber(newcn);
+						System.out.println("Account Updated");
+						break;
+					}
+				}
+			}
+			else {
+				System.out.println("Username already exists");
+			}
+			
+			}
+		else {
+			System.out.println("Username does not exist");
+			}
+		}
+	}
+		
 		
 		
 	
