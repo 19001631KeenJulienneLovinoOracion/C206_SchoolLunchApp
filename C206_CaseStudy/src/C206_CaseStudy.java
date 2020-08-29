@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-
-
 public class C206_CaseStudy {
 	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
 	//PLEASE PULL BEFORE MAKING CHANGES I BEG OF YOU
@@ -634,6 +632,31 @@ public class C206_CaseStudy {
 			System.out.println("Username does not exist");
 			}
 		}
+	}
+	
+	//Search Account
+	public static void searchAccount(ArrayList<Account> accountList) {
+		Helper.line(60,"=");
+		System.out.println("SEARCH ACCOUNTS");
+		Helper.line(60,"=");
+		
+		String id = Helper.readString("Enter ID: ");
+		
+		String output = "";
+		
+		output += String.format("%-10s %-10s %10s %10s\n", "USERNAME", "PASSWORD","STUDENT ID", "CONTACT NUMBER");
+		for (int i = 0; i < accountList.size(); i++) {
+			if (accountList.get(i).getStudentid().equalsIgnoreCase(id)) {
+				output += String.format("%-10s %-10s %10s %10s\n", accountList.get(i).getUsername(), accountList.get(i).getPassword(), accountList.get(i).getStudentid(), accountList.get(i).getContactnumber());
+			}
+			else if(id == ""){
+				System.out.println("Field is empty");
+			}
+			else {
+				System.out.println("Account cannot be found ");
+			}
+		}
+		System.out.println(output);
 	}
 		
 		
