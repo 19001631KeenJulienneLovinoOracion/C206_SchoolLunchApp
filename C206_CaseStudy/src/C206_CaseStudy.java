@@ -23,7 +23,7 @@ public class C206_CaseStudy {
 		MenuItemList.add(new MenuItem("Vegetarian", "Salad", true,6.00 ));
 		int option = 0;
 		
-		while (option !=11) {
+		while (option !=16) {
 			C206_CaseStudy.optionMenu();
 			option = Helper.readInt("Enter Option > ");
 			
@@ -84,8 +84,24 @@ public class C206_CaseStudy {
 
 				}	
 			}
+			else if (option == 11) {
+				C206_CaseStudy.createAccount(accountList);
+			}
+			else if (option == 12) {
+				C206_CaseStudy.viewAccount(accountList);
+			}
+			else if (option == 13) {
+				C206_CaseStudy.delAccount(accountList);
+			}
+			else if (option == 14) {
+				C206_CaseStudy.updateAccount(accountList);
+			}
+			else if (option == 15) {
+				C206_CaseStudy.searchAccount(accountList);
+			}
+			
 			else {
-				if(option!=11) {
+				if(option!=16) {
 					System.out.println("Invalid Option");
 				}
 			}
@@ -108,7 +124,12 @@ public class C206_CaseStudy {
 		System.out.println("8. View All Menus");
 		System.out.println("9. Update A Menu");
 		System.out.println("10. Create Order");
-		System.out.println("11. Quit");
+		System.out.println("11. Create Account");
+		System.out.println("12. View Account");
+		System.out.println("13. Delete Account");
+		System.out.println("14. Update Account");
+		System.out.println("15. Search Account");
+		System.out.println("16. Quit");
 	}
 	
 	//Sub menu for the order method
@@ -584,6 +605,26 @@ public class C206_CaseStudy {
 			output += String.format("%-10s %-10s %10s %10s\n", accountList.get(i).getUsername(), accountList.get(i).getPassword(), accountList.get(i).getStudentid(), accountList.get(i).getContactnumber());
 		}
 		System.out.println(output);
+	}
+	
+	//Delete Account
+	public static void delAccount(ArrayList<Account> accountList) {
+		Helper.line(60,"=");
+		System.out.println("DELETE ACCOUNT");
+		Helper.line(60,"=");
+		
+		String userDelete = Helper.readString("Enter Username To Delete: ");
+		
+		for (int i = 0; i < accountList.size(); i++) {
+			if(accountList.get(i).getUsername().toLowerCase().equalsIgnoreCase(userDelete)) {
+				accountList.remove(i);
+				System.out.println("Account Deleted");
+				break;
+				
+			} else {
+				System.out.println("Account Deleted");
+			}
+		}
 	}
 	
 	//Update Account
