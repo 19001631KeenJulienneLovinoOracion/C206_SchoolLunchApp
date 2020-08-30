@@ -16,7 +16,7 @@ public class C206_CaseStudyTest {
 	public Account accountCheck;
 	public ArrayList<Menu> menuTest=new ArrayList<Menu>();
 	public ArrayList<MenuItem> menuItemTest=new ArrayList<MenuItem>();
-
+	ArrayList<Order> orderList = new ArrayList<Order>();
 	@Before
 	public void setUp() throws Exception {
 		chknRice=new MenuItem("Asian","Chicken Rice",true,3.50); 
@@ -27,7 +27,6 @@ public class C206_CaseStudyTest {
 		C206_CaseStudy.MenuItemList.add(nasiLemak);
 		C206_CaseStudy.accountList.add(account1);
 		C206_CaseStudy.accountList.add(account2);
-		
 	}
 
 	@After
@@ -204,7 +203,21 @@ String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO
 		
 		// test if object added is the same as the first object in menu item array list
 		assertSame("Test if object added matches object passed in", chknRice, menuItemTest.get(0));
+		
+		
+		// Test if menu item list is not null and can contain menu item objects
+		assertNotNull("Test if order array list exists", orderList);
+		
+	
+
 	}
+	
+	public void updateOrderDate () {
+		
+		assertNotNull("Test if order array list exists", orderList);
+	}
+	
+	
 	
 	@Test
 	public void createAccountTest() {
@@ -259,7 +272,9 @@ String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO
 							
 		//Test update method
 		C206_CaseStudy.updateAccount(C206_CaseStudy.accountList);
-		;
+		
+	
+
 				
 		
 	}
