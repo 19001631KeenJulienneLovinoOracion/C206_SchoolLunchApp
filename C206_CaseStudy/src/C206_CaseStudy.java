@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 
 public class C206_CaseStudy {
 	//define ArrayList variables as global here, Menu methods need MenuItem Arraylists to work
-	//PLEASE PULL BEFORE MAKING CHANGES I BEG OF YOU
 	static ArrayList<MenuItem> MenuItemList = new ArrayList<MenuItem>();
 	static ArrayList<Menu> menuList = new ArrayList<Menu>();
 	static ArrayList<Order> orderList = new ArrayList<Order>();
@@ -12,15 +12,25 @@ public class C206_CaseStudy {
 	public static String menuName;
 	public static int menuSize;
 	public static int menuMonth;
+	
+	//Code re-factoring for order options
+	private static final int ORDER_OPTION = 10;
+	private static final int ORDER_ADD = 1;
+	private static final int ORDER_DELETE = 2;
+	private static final int ORDER_VIEW = 3;
+	private static final int ORDER_UPDATE_DATE = 4;
+	private static final int ORDER_QUIT = 5;
 
 	
 	public static void main(String[] args) throws CloneNotSupportedException {
 
-		//camcorderList.add(new Camcorder("CC001", "Sony HDR-CX405", 35));
-		//String category, String name, boolean healthyChoice, double price
 		MenuItemList.add(new MenuItem("Western", "Fish and Chips", false, 4.00));
+		MenuItemList.add(new MenuItem("Western", "Carbonara", false, 4.00));
 		MenuItemList.add(new MenuItem("Asian", "Wanton Noodles", false, 3.00));
+		MenuItemList.add(new MenuItem("Asian", "Chicken Rice", false, 3.00));
 		MenuItemList.add(new MenuItem("Vegetarian", "Salad", true,6.00 ));
+		MenuItemList.add(new MenuItem("Vegetarian", "Vegetable Fried Rice", true,6.00 ));
+		
 		int option = 0;
 		
 		while (option !=16) {
@@ -62,26 +72,28 @@ public class C206_CaseStudy {
 				C206_CaseStudy.getUpdateMenuField();
 			}				
 
-			else if (option == 10) {
+			else if (option == ORDER_OPTION) {
 				C206_CaseStudy.orderMenu();
 				int choice = Helper.readInt("Enter order choice: ");				
 
-				if (choice == 1) {
+				if (choice == ORDER_ADD) {
 					C206_CaseStudy.addOrder(orderList);
 				}						
-				else if (choice == 2) {
+				else if (choice == ORDER_DELETE) {
 					C206_CaseStudy.deleteOrder(orderList);
 				}
-				else if (choice == 3) {
+				else if (choice == ORDER_VIEW) {
 					C206_CaseStudy.viewOrder(orderList);
-				}			
-				else if (choice ==4) {
+				}
+				else if (choice == ORDER_UPDATE_DATE) {
+					C206_CaseStudy.updateOrderDate(orderList);
+				}
+				else if (choice == ORDER_QUIT) {
 					System.out.println("Thank you for ordering!");
 					C206_CaseStudy.optionMenu();
 				}						
 				else {
 					System.out.println("You have entered an invalid order choice");
-
 				}	
 			}
 			else if (option == 11) {
@@ -475,96 +487,137 @@ public class C206_CaseStudy {
 					else {return "Month value is invalid!";}
 				}
 	
-	public static void addOrder(ArrayList<Order> orderList) {
-		
+		//-----------------------------------ORDER METHODS------------------------------------------------------------------------
+		public static void addOrder(ArrayList<Order> orderList) {
+		//Create a fixed ID pattern
+		String pattern = "[PS][0-9]{4}";
 		boolean isFound = false;
-		
+					
 		//Call the view all menu items for user to choose from
 		C206_CaseStudy.viewAllMenuItem(MenuItemList);
-		
+					
+		//userChoices saves the order details of the student
 		ArrayList <MenuItem> userChoices = new ArrayList<MenuItem>();
-		
-		String studentID = Helper.readString("Enter your student ID> ");
-		String orderDate = Helper.readString("Enter the order date in the format dd/mm/yyyy > ");
-		//num of Meals is how many food items the student or parents wants to order
-		int numOfMeals = Helper.readInt("Enter the amount of meals to order > ");
-	
-		//
-		for (int orderObject = 0; orderObject < numOfMeals; orderObject++) {
-			String mealchoice = Helper.readString("Enter the name of the food > ");
-			for (MenuItem mealObject : MenuItemList) {
-				if (mealObject.getName().equalsIgnoreCase(mealchoice)) {
-					isFound = true;
-					userChoices.add(mealObject);
-					System.out.println("Your order is successful!");
-				}
+					
+		String studentID = Helper.readStringRegEx("Enter your student ID(P/S followed by your 4 digit unique ID) > ", pattern);
+		if (studentID.matches(pattern)) {
+			String orderDate = Helper.readString("Enter the order date in the format dd/mm/yyyy > ");
+			//num of Meals is how many food items the student or parents wants to order
+			int numOfMeals = Helper.readInt("Enter the amount of meals to order > ");
+					
+			for (int orderObject = 1; orderObject <= numOfMeals; orderObject++) {
+				String mealchoice = Helper.readString("Enter the name of the food > ");
+				for (MenuItem mealObject : MenuItemList) {
+					if (mealObject.getName().equalsIgnoreCase(mealchoice)) {
+						isFound = true;
+						userChoices.add(mealObject);
+						System.out.println("Your order of "+ mealchoice +" is successful!");
+						System.out.println("You have ordered a total of " + orderObject + " meal(s).");
+						}
+					}
 			}
 			
 			if (isFound == false) {
 				System.out.println("The menu item you entered could not be found");
 			}
-		}
-		Order newOrder=new Order(studentID, orderDate, userChoices); 
-		orderList.add(newOrder);
-	}
-	
-	//DELETE ORDER
-	public static void deleteOrder(ArrayList<Order> orderList) {
-	
-		boolean isDeleted = false;
-		String deleteUser = Helper.readString("Enter your student ID > ");
-		String deleteItem = Helper.readString("Enter the date for order you wish to delete> ");
-		
-		for (int i=0; i<orderList.size(); i++ ) {
-			
-			if (deleteUser.equalsIgnoreCase(orderList.get(i).getStudentid())) {
-				if (deleteItem.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
-					orderList.remove(i);
-					isDeleted = true;
-					System.out.println("The order has been successfully deleted");
-				}
+				Order newOrder=new Order(studentID, orderDate, userChoices);
+				orderList.add(newOrder);
 			}
 		}
-		
-		if (isDeleted == false) {
-			System.out.println("An error has occured when deleting the menu item.");
-		}
-	}
-	
-	//VIEW ORDER Keen
-	public static void viewOrder(ArrayList<Order> orderList) {
-	
-		boolean isFoundID = false;
-		boolean isFoundDate = false;
-		String studentID = Helper.readString("Enter your student ID to view your order > ");
-		String dateView = Helper.readString("Enter the date of the order you want to view > ");
-		String output = "";
-		output += String.format("%-20s %-20s %-20s\n", "STUDENT ID", "ORDER DATE", "MENU ITEM");
-		
-		for (int i=0; i<orderList.size(); i ++) {
-			
-			if (studentID.equalsIgnoreCase(orderList.get(i).getStudentid())) {
-				isFoundID = true;
 				
-				if (dateView.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
-					output += String.format("%-20s %-20s %-20s\n", orderList.get(i).getStudentid(), orderList.get(i).getOrderDate(), orderList.get(i).getItems());
-					isFoundDate = true;
+				public static void updateOrderDate (ArrayList<Order> orderList) {
+					//Create Student ID pattern 
+					String pattern = "[PS][0-9]{4}";
+					String studentID = Helper.readStringRegEx("Enter your student ID > ", pattern);
+
+					if (studentID.matches(pattern)) {
+						//Cycle through the orderList to find the student ID and date
+						for (int i = 0; i < orderList.size(); i ++) {
+							if(studentID.equalsIgnoreCase(orderList.get(i).getStudentid())) {
+								String updateDate = Helper.readString("Enter the date you want to update > ");
+								
+								if (updateDate.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
+									String newDate = Helper.readString("Enter the new date > ");
+									orderList.get(i).setOrderDate(newDate);
+									System.out.println("The date has been updated!");
+								}
+								else {
+									System.out.println("The date cannot be found");
+								}
+							}
+							
+							else {
+								System.out.println("The Student ID cannot be found");
+							}
+						}
+					}
 				}
-			}
-			
-		}
-		System.out.println(output);
-		
-		if (isFoundID == false) {
-			System.out.println("Your student ID cannot be found.");
-			
-		}
-		
-		if (isFoundDate == false ) {
-			System.out.println("The date you specified could not be found.");
-		}
-		
-	}
+				
+				
+				
+				//DELETE ORDER
+				public static void deleteOrder(ArrayList<Order> orderList) {
+				
+					boolean isDeleted = false;
+					String pattern = "[PS][0-9]{4}";
+					String deleteUser = Helper.readStringRegEx("Enter your student ID > ", pattern);
+					
+					if (deleteUser.matches(pattern)) {
+						
+						String deleteItem = Helper.readString("Enter the date for order you wish to delete> ");
+						
+						for (int i=0; i<orderList.size(); i++ ) {
+							
+							if (deleteUser.equalsIgnoreCase(orderList.get(i).getStudentid())) {
+								if (deleteItem.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
+									orderList.remove(i);
+									isDeleted = true;
+									System.out.println("The order has been successfully deleted");
+								}
+							}
+						}
+						
+						if (isDeleted == false) {
+							System.out.println("An error has occured when deleting the menu item.");
+						}
+					}
+					
+					else {
+						System.out.println("You have entered an invalid student ID. ");
+					}
+
+				}
+				
+				//VIEW ORDER Keen
+				public static void viewOrder(ArrayList<Order> orderList) {
+
+					boolean isFoundDate = false;
+					String pattern = "[PS][0-9]{4}";
+					String studentID = Helper.readStringRegEx("Enter your student ID to view your order > ", pattern);
+					
+					if (studentID.matches(pattern)) {
+					
+						String dateView = Helper.readString("Enter the date of the order you want to view > ");
+						String output = "";
+						output += String.format("%-20s %-20s %-20s\n", "STUDENT ID", "ORDER DATE", "MENU ITEM");
+						
+						for (int i=0; i<orderList.size(); i ++) {
+				
+							if (dateView.equalsIgnoreCase(orderList.get(i).getOrderDate())) {
+								output += String.format("%-20s %-20s %-20s\n", orderList.get(i).getStudentid(), orderList.get(i).getOrderDate(), orderList.get(i).getItems());
+								isFoundDate = true;
+								System.out.println(output);
+							}
+						}
+						
+					}
+					
+					if (isFoundDate == false) {
+						System.out.println("The order date specified could not be found. ");
+					}
+
+					
+				}
 	//Create Account
 	public static void createAccount(ArrayList<Account> accountList) {
 		Helper.line(60,"=");
