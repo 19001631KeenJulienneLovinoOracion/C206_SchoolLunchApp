@@ -600,9 +600,9 @@ public class C206_CaseStudy {
 		
 		String output = "";
 		
-		output += String.format("%-10s %-10s %10s %10s\n", "USERNAME", "PASSWORD","STUDENT ID", "CONTACT NUMBER");
+		output += String.format("%-10s %-10s %10s\n", "USERNAME","STUDENT ID", "CONTACT NUMBER");
 		for (int i = 0; i < accountList.size(); i++) {
-			output += String.format("%-10s %-10s %10s %10s\n", accountList.get(i).getUsername(), accountList.get(i).getPassword(), accountList.get(i).getStudentid(), accountList.get(i).getContactnumber());
+			output += String.format("%-10s %-10s %10s\n", accountList.get(i).getUsername(), accountList.get(i).getStudentid(), accountList.get(i).getContactnumber());
 		}
 		System.out.println(output);
 	}
