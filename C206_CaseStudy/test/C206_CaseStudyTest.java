@@ -11,6 +11,9 @@ public class C206_CaseStudyTest {
 	public MenuItem chknRice;
 	public MenuItem nasiLemak;
 	public MenuItem menuitem;
+	public Account account1;
+	public Account account2;
+	public Account accountCheck;
 	public ArrayList<Menu> menuTest=new ArrayList<Menu>();
 	public ArrayList<MenuItem> menuItemTest=new ArrayList<MenuItem>();
 
@@ -18,8 +21,12 @@ public class C206_CaseStudyTest {
 	public void setUp() throws Exception {
 		chknRice=new MenuItem("Asian","Chicken Rice",true,3.50); 
 		nasiLemak=new MenuItem("Asian","Nasi Lemak",true,3.80);
+		account1=new Account("test123", "password1", "T1234567A", 12345678);
+		account2=new Account("test456", "password2", "T1234567B", 23456789);
 		C206_CaseStudy.MenuItemList.add(chknRice);
 		C206_CaseStudy.MenuItemList.add(nasiLemak);
+		C206_CaseStudy.accountList.add(account1);
+		C206_CaseStudy.accountList.add(account2);
 		
 	}
 
@@ -28,7 +35,10 @@ public class C206_CaseStudyTest {
 		chknRice=null;
 		nasiLemak=null;
 		menuitem = null;
+		account1 = null;
+		account2 = null;
 		C206_CaseStudy.MenuItemList.clear();
+		C206_CaseStudy.accountList.clear();
 	}
 	
 	@Test
@@ -150,7 +160,7 @@ String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO
 		// Menu List is not null and can contain Menu Objects
 		assertNotNull("Test if Menu ArrayList exists",  C206_CaseStudy.menuList);
 		//Given an incorrect menu name, the function returns an error indicating it cannot find any menus with the keyword
-				assertEquals("Test if no Menus Found function works and returns error String",C206_CaseStudy.deleteMenu(C206_CaseStudy.menuList, "February Western"),"Menu not found!");
+		assertEquals("Test if no Menus Found function works and returns error String",C206_CaseStudy.deleteMenu(C206_CaseStudy.menuList, "February Western"),"Menu not found!");
 				
 		
 
@@ -195,5 +205,73 @@ String testOutput = String.format("%-20s %-10s %-10s %s\n", "NAME", "MONTH", "NO
 		// test if object added is the same as the first object in menu item array list
 		assertSame("Test if object added matches object passed in", chknRice, menuItemTest.get(0));
 	}
-
+	
+	@Test
+	public void createAccountTest() {
+		//Test if account list is not null and can contain account objects
+		assertNotNull("Test if account array list exists", C206_CaseStudy.accountList);
+		
+		//Given an empty account list, after adding 1 account object, the size of the list is 1
+		C206_CaseStudy.createAccount(C206_CaseStudy.accountList);
+		assertEquals("Test if account arraylist size is 2", 2, C206_CaseStudy.accountList.size());
+		
+		//Test if object added is the same in the arrayList
+		assertSame("test if object matches the object passed in", account1, C206_CaseStudy.accountList.get(0));
+	}
+	
+	@Test
+	public void viewAccountTest() {
+		//Test if account list is not null and can contain account objects
+		assertNotNull("Test if account array list exists", C206_CaseStudy.accountList);
+				
+		//Test if Account array list is size 2
+		assertEquals("Check if account array list is empty", 2, C206_CaseStudy.accountList.size());
+				
+		//Given an empty Account array list, after adding third Account , the size of the list is 3
+		C206_CaseStudy.createAccount(C206_CaseStudy.accountList);
+		assertEquals("Test if account array list size is 2",2, C206_CaseStudy.accountList.size());
+		accountCheck = C206_CaseStudy.accountList.get(2);
+		assertEquals("Check if Menu item added is the same ",accountCheck.getUsername(), C206_CaseStudy.accountList.get(2).getUsername());
+				
+		//test if Account list can display
+		C206_CaseStudy.viewAccount(C206_CaseStudy.accountList);	
+	}
+	
+	@Test
+	public void deleteAccountTest() {
+		//Test if account list is not null and can contain account objects
+		assertNotNull("Test if account array list exists", C206_CaseStudy.accountList);
+		
+		//Given an empty account list, after adding 1 account object, the size of the list is 1
+		C206_CaseStudy.createAccount(C206_CaseStudy.accountList);
+		assertEquals("Test if account arraylist size is 2", 2, C206_CaseStudy.accountList.size());
+		
+		//Given an item in account list, after deleting the Account, the size of the list is 0
+		C206_CaseStudy.delAccount(C206_CaseStudy.accountList);
+		assertEquals("Test if that Account ArrayList size is 0", 0, C206_CaseStudy.accountList.size());
+		
+	}
+	
+	@Test
+	public void updateAccountTest() {
+		//Test if account list is not null and can contain account objects
+		assertNotNull("Test if account array list exists", C206_CaseStudy.accountList);
+							
+		//Test update method
+		C206_CaseStudy.updateAccount(C206_CaseStudy.accountList);
+		;
+				
+		
+	}
+	
+	@Test
+	public void delAccountTest() {
+		//Test if account list is not null and can contain account objects
+		assertNotNull("Test if account array list exists", C206_CaseStudy.accountList);
+		
+		//Given an empty account list, after adding 1 account object, the size of the list is 1
+		C206_CaseStudy.createAccount(C206_CaseStudy.accountList);
+		assertEquals("Test if account arraylist size is 2", 2, C206_CaseStudy.accountList.size());
+		
+	}
 }
