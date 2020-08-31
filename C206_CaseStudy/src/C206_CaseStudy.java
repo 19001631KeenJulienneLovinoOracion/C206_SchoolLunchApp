@@ -365,7 +365,7 @@ public class C206_CaseStudy {
 				if(!menuContent.contains(MenuItemList.get(random))) {
 					menuContent.add(MenuItemList.get(random));
 					count++;
-					System.out.println("lol");
+			
 				}
 
 			}
